@@ -19,10 +19,10 @@
           "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-counter-example_v1",
           "reviewComment": "Nice work!"
         },
-        "decentralized-staking": {
+        "simple-nft-example": {
           "status": "REJECTED",
           "contractUrl": "https://etherscan.io/address/0xde30da39c46104798bb5aa3fe8b9e0e1f348163f",
-          "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/challenge-1-decentralized-staking_v1",
+          "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/challenge-1-simple-nft-example_v1",
           "reviewComment": "It throws an error when opening the app."
         }
       }
@@ -336,8 +336,8 @@
       "signature": "0x98a168bab9dede09bad4d8d5ad27dddc927586df18977a44dd5ea5e5def0341660a7f28043d7943e7e9de9b2b2164d6d0007e8ae4814c7a57e0611d946395b971b",
       "payload": {
         "userAddress": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
-        "challengeId": "decentralized-staking",
-        "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/challenge-1-decentralized-staking_v1",
+        "challengeId": "simple-nft-example",
+        "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/challenge-1-simple-nft-example_v1",
         "contractUrl": "https://etherscan.io/address/0xde30da39c46104798bb5aa3fe8b9e0e1f348163f"
       }
     },
@@ -349,7 +349,7 @@
         "reviewAction": "REJECTED",
         "userAddress": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
         "reviewerAddress": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-        "challengeId": "decentralized-staking",
+        "challengeId": "simple-nft-example",
         "reviewMessage": "It throws an error when opening the app."
       }
     },

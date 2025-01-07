@@ -6,17 +6,17 @@ export const challengeInfo = {
     disabled: false,
     description:
       "🎫 Create a simple Counter to learn the basics of 🏗 scaffold-eth with RUST. You'll use 👷‍♀️ Stylus Nitro Devnode to compile and deploy your smart contracts. Then, you'll use a template React app filled with essential Ethereum components and hooks. Finally, you'll deploy your Counter Contract to a public network to share with friends! 🚀",
-    previewImage: "/assets/challenges/simpleNFT.svg",
+    previewImage: "/assets/challenges/stakingToken.svg",
     dependencies: [],
   },
-  "decentralized-staking": {
+  "simple-nft-example": {
     id: 1,
     branchName: "nft",
-    label: "🚩 Challenge 1: 🔏 Decentralized Staking App ",
+    label: "🚩 Challenge 1: 🖼️ Simple NFT Example",
     disabled: false,
     description:
-      "🦸 A superpower of Ethereum is allowing you, the builder, to create a simple set of rules that an adversarial group of players can use to work together. In this challenge, you create a decentralized application where users can coordinate a group funding effort. The users only have to trust the code.",
-    previewImage: "/assets/challenges/stakingToken.svg",
+      "Dive into creating an NFT project to master the essentials of 🛠 scaffold-eth with RUST. Use 💻 Stylus Nitro Devnode to design, compile, and deploy smart contracts that bring NFTs to life. Pair your work with a dynamic React app featuring all the tools 🧩 you need to interact with Ethereum. Wrap it up by deploying your NFT contract to a public network, where users can mint 🎟, verify 🔍, and manage their NFTs effortlessly! 🌐",
+    previewImage: "/assets/challenges/simpleNFT.svg",
     dependencies: [],
   },
   "token-vendor": {
@@ -38,7 +38,7 @@ export const challengeInfo = {
     description:
       "🎰 Randomness is tricky on a public deterministic blockchain. The block hash is the result proof-of-work (for now) and some builders use this as a weak form of randomness.  In this challenge you will take advantage of a Dice Game contract by predicting the randomness in order to only roll winning dice!",
     previewImage: "/assets/challenges/diceGame.svg",
-    dependencies: ["simple-counter-example", "decentralized-staking", "token-vendor"],
+    dependencies: ["simple-counter-example", "simple-nft-example", "token-vendor"],
   },
   "minimum-viable-exchange": {
     id: 4,
@@ -48,7 +48,7 @@ export const challengeInfo = {
     description:
       "💵 Build an exchange that swaps ETH to tokens and tokens to ETH. 💰 This is possible because the smart contract holds reserves of both assets and has a price function based on the ratio of the reserves. Liquidity providers are issued a token that represents their share of the reserves and fees...",
     previewImage: "assets/challenges/dex.svg",
-    dependencies: ["simple-counter-example", "decentralized-staking", "token-vendor", "dice-game"],
+    dependencies: ["simple-counter-example", "simple-nft-example", "token-vendor", "dice-game"],
   },
   "buidl-guidl": {
     id: 9999,
@@ -63,7 +63,7 @@ export const challengeInfo = {
     previewImage: "assets/bg.png",
     dependencies: [
       "simple-counter-example",
-      "decentralized-staking",
+      "simple-nft-example",
       "token-vendor",
       "dice-game",
       "minimum-viable-exchange",
@@ -81,7 +81,7 @@ export const challengeInfo = {
     description:
       "🛣️ The Ethereum blockchain has great decentralization & security properties but these properties come at a price: transaction throughput is low, and transactions can be expensive. This makes many traditional web applications infeasible on a blockchain... or does it?  State channels look to solve these problems by allowing participants to securely transact off-chain while keeping interaction with Ethereum Mainnet at a minimum.",
     previewImage: "assets/challenges/state.svg",
-    dependencies: ["simple-counter-example", "decentralized-staking", "token-vendor", "dice-game"],
+    dependencies: ["simple-counter-example", "simple-nft-example", "token-vendor", "dice-game"],
   },
   "learn-multisig": {
     id: 6,
@@ -92,7 +92,7 @@ export const challengeInfo = {
       '👩‍👩‍👧‍👧 Using a smart contract as a wallet we can secure assets by requiring multiple accounts to "vote" on transactions. The contract will keep track of transactions in an array of structs and owners will confirm or reject each one. Any transaction with enough confirmations can "execute".',
     previewImage: "assets/challenges/multiSig.svg",
     // Challenge locked until the builder completed these challenges
-    dependencies: ["simple-counter-example", "decentralized-staking", "token-vendor", "dice-game"],
+    dependencies: ["simple-counter-example", "simple-nft-example", "token-vendor", "dice-game"],
     // Once the dependencies are completed, lock the challenge until
     // This will make the challenge to link to the externalLink, instead of the challenge detail view.
     externalLink: {
@@ -109,7 +109,7 @@ export const challengeInfo = {
       "🎨 Create a dynamic SVG NFT using a smart contract. Your contract will generate on-chain SVG images and allow users to mint their unique NFTs. ✨ Customize your SVG graphics and metadata directly within the smart contract. 🚀 Share the minting URL once your project is live!",
     previewImage: "assets/challenges/dynamicSvgNFT.svg",
     // Challenge locked until the builder completed these challenges
-    dependencies: ["simple-counter-example", "decentralized-staking", "token-vendor", "dice-game"],
+    dependencies: ["simple-counter-example", "simple-nft-example", "token-vendor", "dice-game"],
     // Once the dependencies are completed, lock the challenge until
     // This will make the challenge to link to the externalLink, instead of the challenge detail view.
     externalLink: {

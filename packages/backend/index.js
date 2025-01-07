@@ -393,7 +393,7 @@ app.post("/api/frame", (req, res) => {
     },
     1: {
       label: "🔏 Staking App",
-      link: "https://speedrunethereum.com/challenge/decentralized-staking",
+      link: "https://speedrunethereum.com/challenge/simple-nft-example",
     },
     2: {
       label: "🏵 Token Vendor",

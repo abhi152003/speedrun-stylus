@@ -3,7 +3,7 @@ const challengeMapping = {
     id: 0,
     autograding: true,
   },
-  "decentralized-staking": {
+  "simple-nft-example": {
     id: 1,
     autograding: true,
   },
