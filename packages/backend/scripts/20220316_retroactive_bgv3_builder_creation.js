@@ -21,7 +21,7 @@ const database = firebaseAdmin.firestore();
 const main = async () => {
   const result = await database
     .collection("users")
-    .where("challenges.simple-nft-example.status", "==", "ACCEPTED")
+    .where("challenges.simple-counter-example.status", "==", "ACCEPTED")
     .where("challenges.decentralized-staking.status", "==", "ACCEPTED")
     .where("challenges.token-vendor.status", "==", "ACCEPTED")
     .get();

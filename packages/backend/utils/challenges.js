@@ -1,5 +1,5 @@
 const challengeMapping = {
-  "simple-nft-example": {
+  "simple-counter-example": {
     id: 0,
     autograding: true,
   },

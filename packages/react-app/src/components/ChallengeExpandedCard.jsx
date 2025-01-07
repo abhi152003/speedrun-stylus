@@ -261,7 +261,7 @@ const ChallengeExpandedCard = ({
           </VStack>
           <VStack alignItems="start" spacing={8}>
             <Text color={primaryFontColor} fontSize={{ base: "lg", lg: "md" }}>
-              {challenge.description}
+              {challenge.description} 
             </Text>
             {challenge.externalLink?.link ? (
               // Redirect to externalLink if set (instead of challenge detail view)

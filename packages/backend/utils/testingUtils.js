@@ -13,7 +13,7 @@ const dummySignature =
 const hardhatSignatures = {
   login:
     "0x1db83f046ed2ab9a812f6d78e5c196492cbc18800da41bdbb42cece8bead47d77ed795cf6eb3fc81ac05883ec4731b6304791fc7ace949d5850b28113041fafd1c",
-  // challengeSubmit signature for challengeId: simple-nft-example
+  // challengeSubmit signature for challengeId: simple-counter-example
   challengeSubmit:
     "0xd4e2e7c23450e2d53e6708265dec6bb61a2bd94ea1595bc99a3b5a81fd111c6b3dcd3a459bb8a580ac6057caceb61c1c7b1b4d23fadc863f3e066876287691351c",
   challengeReviewAccept:

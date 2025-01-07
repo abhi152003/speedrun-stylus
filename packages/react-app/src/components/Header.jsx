@@ -35,7 +35,7 @@ export default function Header({
       px={{ base: 4, lg: 8 }}
       h={{ base: userIsRegistered ? "120px" : "80px", lg: "80px" }}
     >
-      {ENVIRONMENT !== "production" && (
+      {/* {ENVIRONMENT !== "production" && (
         <Box
           color="blackAlpha.500"
           pos="fixed"
@@ -49,7 +49,7 @@ export default function Header({
         >
           Working on a {ENVIRONMENT} environment.
         </Box>
-      )}
+      )} */}
       <Flex
         align={{ base: userIsRegistered ? "start" : "center", lg: "center" }}
         h="full"

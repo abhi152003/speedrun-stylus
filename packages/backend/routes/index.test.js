@@ -20,7 +20,7 @@ const signUpHardhatUser1 = async () => {
 const submitChallenge = async () => {
   await request(app).post(`/challenges`).set({ address: hardhatAddress1 }).send({
     signature: hardhatSignatures.challengeSubmit,
-    challengeId: "simple-nft-example",
+    challengeId: "simple-counter-example",
     deployedUrl: "http://www.test-bar.com",
     contractUrl: "http://www.foo-bar-baz.com",
   });
@@ -70,7 +70,7 @@ describe("The server responds to routes", () => {
       await signUpHardhatUser1();
       const res = await request(app).post(`/challenges`).set({ address: hardhatAddress1 }).send({
         signature: hardhatSignatures.challengeSubmit,
-        challengeId: "simple-nft-example",
+        challengeId: "simple-counter-example",
         deployedUrl: "http://www.test-bar.com",
         contractUrl: "http://www.foo-bar-baz.com",
       });
@@ -84,7 +84,7 @@ describe("The server responds to routes", () => {
 
       const res = await request(app).patch(`/challenges`).set({ address: hardhatAddress1 }).send({
         signature: hardhatSignatures.challengeReviewAccept,
-        challengeId: "simple-nft-example",
+        challengeId: "simple-counter-example",
         userAddress: hardhatAddress1,
         newStatus: "ACCEPTED",
         comment: "foo bar",
@@ -99,7 +99,7 @@ describe("The server responds to routes", () => {
 
       const res = await request(app).patch(`/challenges`).set({ address: hardhatAddress1 }).send({
         signature: hardhatSignatures.challengeReviewReject,
-        challengeId: "simple-nft-example",
+        challengeId: "simple-counter-example",
         userAddress: hardhatAddress1,
         newStatus: "REJECTED",
         comment: "foo bar",
@@ -114,7 +114,7 @@ describe("The server responds to routes", () => {
 
       const acceptResponse = await request(app).patch(`/challenges`).set({ address: hardhatAddress1 }).send({
         signature: hardhatSignatures.challengeReviewAccept,
-        challengeId: "simple-nft-example",
+        challengeId: "simple-counter-example",
         userAddress: hardhatAddress1,
         newStatus: "ACCEPTED",
         comment: "foo bar",
@@ -124,7 +124,7 @@ describe("The server responds to routes", () => {
 
       const rejectResponse = await request(app).patch(`/challenges`).set({ address: hardhatAddress1 }).send({
         signature: hardhatSignatures.challengeReviewReject,
-        challengeId: "simple-nft-example",
+        challengeId: "simple-counter-example",
         userAddress: hardhatAddress1,
         newStatus: "REJECTED",
         comment: "foo bar",

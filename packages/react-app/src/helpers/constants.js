@@ -1,4 +1,4 @@
-export const CHALLENGE_REPO = "https://github.com/scaffold-eth/se-2-challenges";
+export const CHALLENGE_REPO = "https://github.com/abhi152003/speedrun-rust";
 
 export const CHALLENGE_SUBMISSION_STATUS = {
   ACCEPTED: "ACCEPTED",

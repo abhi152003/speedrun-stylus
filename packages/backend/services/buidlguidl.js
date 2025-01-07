@@ -22,7 +22,7 @@ const createUserOnBG = async (userAddress, request) => {
 
   const userData = user.data;
   const requiredChallengesToEnterBG = [
-    "simple-nft-example",
+    "simple-counter-example",
     "decentralized-staking",
     "token-vendor",
     "dice-game",

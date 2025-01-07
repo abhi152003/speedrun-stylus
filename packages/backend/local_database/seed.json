@@ -13,10 +13,10 @@
       "creationTimestamp": 1633088553224,
       "role": "builder",
       "challenges": {
-        "simple-nft-example": {
+        "simple-counter-example": {
           "status": "ACCEPTED",
           "contractUrl": "https://etherscan.io/address/0xde30da39c46104798bb5aa3fe8b9e0e1f348163f",
-          "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-nft-example_v1",
+          "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-counter-example_v1",
           "reviewComment": "Nice work!"
         },
         "decentralized-staking": {
@@ -31,10 +31,10 @@
       "creationTimestamp": 1633088553225,
       "role": "builder",
       "challenges": {
-        "simple-nft-example": {
+        "simple-counter-example": {
           "status": "ACCEPTED",
           "contractUrl": "https://etherscan.io/address/0xde30da39c46104798bb5aa3fe8b9e0e1f348163f",
-          "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-nft-example_v2",
+          "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-counter-example_v2",
           "reviewComment": "Now it's working great!"
         }
       }
@@ -42,9 +42,9 @@
   },
   "builds": [
     {
-      "name": "🎟 Simple NFT Example",
+      "name": "🎟 Simple Counter Example",
       "desc": "Mint and display NFTs on Ethereum with a full example app...",
-      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/simple-nft-example",
+      "branch": "https://github.com/scaffold-eth/scaffold-eth/tree/simple-counter-example",
       "readMore": "",
       "image": "simplenft.png"
     },
@@ -302,8 +302,8 @@
       "signature": "0x1b1b687d6093833a9fd4b5c95abd7957b29fd566efeb6503c7e9d8af12132c9a10ddc6882bc4bf60e16f247ee50c41bd66f81d16de0039570e7599b03ddfb6211c",
       "payload": {
         "userAddress": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-        "challengeId": "simple-nft-example",
-        "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-nft-example_v1",
+        "challengeId": "simple-counter-example",
+        "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-counter-example_v1",
         "contractUrl": "https://etherscan.io/address/0xde30da39c46104798bb5aa3fe8b9e0e1f348163f"
       }
     },
@@ -313,8 +313,8 @@
       "signature": "0x2df2d823812b98659eb194457109319f0c70f2c4ab294a39af4d1c1ddf20638d593faf85c2ad41b150fc9730af8e67834314b5bb0c11d1720454862872db7bc81c",
       "payload": {
         "userAddress": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
-        "challengeId": "simple-nft-example",
-        "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-nft-example_v1",
+        "challengeId": "simple-counter-example",
+        "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-counter-example_v1",
         "contractUrl": "https://etherscan.io/address/0xde30da39c46104798bb5aa3fe8b9e0e1f348163f"
       }
     },
@@ -326,7 +326,7 @@
         "reviewAction": "ACCEPTED",
         "userAddress": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
         "reviewerAddress": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-        "challengeId": "simple-nft-example",
+        "challengeId": "simple-counter-example",
         "reviewMessage": "Nice work!"
       }
     },
@@ -367,8 +367,8 @@
       "signature": "0xbd0be26d857401b95df562861e38856e2f27a3d551d803f83cb919d9bb76ead950a3e3af439a0cb9c0004b4dfe11c84225464679ebc6895746211d0be7b0ec571c",
       "payload": {
         "userAddress": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
-        "challengeId": "simple-nft-example",
-        "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-nft-example_v1",
+        "challengeId": "simple-counter-example",
+        "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-counter-example_v1",
         "contractUrl": "https://etherscan.io/address/0xde30da39c46104798bb5aa3fe8b9e0e1f348163f"
       }
     },
@@ -380,7 +380,7 @@
         "reviewAction": "REJECTED",
         "userAddress": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
         "reviewerAddress": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-        "challengeId": "simple-nft-example",
+        "challengeId": "simple-counter-example",
         "reviewMessage": "Needs some work around the minting."
       }
     },
@@ -390,8 +390,8 @@
       "signature": "0xbd0be26d857401b95df562861e38856e2f27a3d551d803f83cb919d9bb76ead950a3e3af439a0cb9c0004b4dfe11c84225464679ebc6895746211d0be7b0ec571c",
       "payload": {
         "userAddress": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
-        "challengeId": "simple-nft-example",
-        "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-nft-example_v2",
+        "challengeId": "simple-counter-example",
+        "deployedUrl": "https://github.com/austintgriffith/scaffold-eth/tree/simple-counter-example_v2",
         "contractUrl": "https://etherscan.io/address/0xde30da39c46104798bb5aa3fe8b9e0e1f348163f"
       }
     },
@@ -403,7 +403,7 @@
         "reviewAction": "ACCEPTED",
         "userAddress": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
         "reviewerAddress": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-        "challengeId": "simple-nft-example",
+        "challengeId": "simple-counter-example",
         "reviewMessage": "Now it's working great!"
       }
     }

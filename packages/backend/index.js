@@ -388,8 +388,8 @@ app.post("/api/frame", (req, res) => {
 
   const challengeButtons = {
     0: {
-      label: "🎟 Simple NFT Example",
-      link: "https://speedrunethereum.com/challenge/simple-nft-example",
+      label: "🎟 Simple Counter Example",
+      link: "https://speedrunethereum.com/challenge/simple-counter-example",
     },
     1: {
       label: "🔏 Staking App",
