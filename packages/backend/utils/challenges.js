@@ -7,19 +7,19 @@ const challengeMapping = {
     id: 1,
     autograding: true,
   },
-  "token-vendor": {
+  "vending-machine": {
     id: 2,
     autograding: true,
   },
-  "dice-game": {
+  "multisig-wallet": {
     id: 3,
     autograding: true,
   },
-  "minimum-viable-exchange": {
+  "uniswap-v2-stylus": {
     id: 4,
     autograding: true,
   },
-  "state-channels": {
+  "zero-knowledge-proofs": {
     id: 5,
     autograding: true,
   },

@@ -116,16 +116,17 @@ export default function JoinBG({ text, connectedBuilder, isChallengeLocked, user
   const builderAlreadyJoined = !!connectedBuilder?.joinedBg;
 
   return (
-    <Button
-      onClick={onJoin}
-      colorScheme="green"
-      isLoading={isJoining}
-      isDisabled={isChallengeLocked || builderAlreadyJoined || joined}
-      variant={isChallengeLocked ? "outline" : "solid"}
-      isFullWidth
-      isExternal
-    >
-      <chakra.span>{builderAlreadyJoined || joined ? "Already joined" : text}</chakra.span>
-    </Button>
+    <></>
+    // <Button
+    //   onClick={onJoin}
+    //   colorScheme="green"
+    //   isLoading={isJoining}
+    //   isDisabled={isChallengeLocked || builderAlreadyJoined || joined}
+    //   variant={isChallengeLocked ? "outline" : "solid"}
+    //   isFullWidth
+    //   isExternal
+    // >
+    //   <chakra.span>{builderAlreadyJoined || joined ? "Already joined" : text}</chakra.span>
+    // </Button>
   );
 }

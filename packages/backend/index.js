@@ -392,24 +392,24 @@ app.post("/api/frame", (req, res) => {
       link: "https://speedrunethereum.com/challenge/simple-counter-example",
     },
     1: {
-      label: "🔏 Staking App",
+      label: "🔏Simple NFT Example",
       link: "https://speedrunethereum.com/challenge/simple-nft-example",
     },
     2: {
-      label: "🏵 Token Vendor",
-      link: "https://speedrunethereum.com/challenge/token-vendor",
+      label: "🏵 Vending Machine",
+      link: "https://speedrunethereum.com/challenge/vending-machine",
     },
     3: {
-      label: "🎲 Dice Game",
-      link: "https://speedrunethereum.com/challenge/dice-game",
+      label: "🎲 Multisig Wallet",
+      link: "https://speedrunethereum.com/challenge/multisig-wallet",
     },
     4: {
-      label: "⚖️ Build a DEX",
-      link: "https://speedrunethereum.com/challenge/minimum-viable-exchange",
+      label: "⚖️ Uniswap-V2",
+      link: "https://speedrunethereum.com/challenge/uniswap-v2-stylus",
     },
     5: {
       label: "📺 State Channel App",
-      link: "https://speedrunethereum.com/challenge/state-channels",
+      link: "https://speedrunethereum.com/challenge/zero-knowledge-proofs",
     },
   };
 

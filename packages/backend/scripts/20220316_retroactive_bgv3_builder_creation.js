@@ -23,7 +23,7 @@ const main = async () => {
     .collection("users")
     .where("challenges.simple-counter-example.status", "==", "ACCEPTED")
     .where("challenges.simple-nft-example.status", "==", "ACCEPTED")
-    .where("challenges.token-vendor.status", "==", "ACCEPTED")
+    .where("challenges.vending-machine.status", "==", "ACCEPTED")
     .get();
 
   result.forEach(builder => {

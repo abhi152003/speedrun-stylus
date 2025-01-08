@@ -24,9 +24,9 @@ const createUserOnBG = async (userAddress, request) => {
   const requiredChallengesToEnterBG = [
     "simple-counter-example",
     "simple-nft-example",
-    "token-vendor",
-    "dice-game",
-    "minimum-viable-exchange",
+    "vending-machine",
+    "multisig-wallet",
+    "uniswap-v2-stylus",
   ];
   const arePendingChallenges = requiredChallengesToEnterBG.some(
     challengeId => userData.challenges?.[challengeId]?.status !== "ACCEPTED",
