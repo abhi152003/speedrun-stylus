@@ -46,17 +46,6 @@ export default function HomeView({ connectedBuilder, userProvider }) {
             <HeroDiamond maxW="45px" height="auto" />
           </Center>
 
-          <Text
-            color={primaryFontColor}
-            mb="5"
-            fontSize={{
-              base: "lg",
-              lg: "md",
-            }}
-            textAlign="center"
-          >
-            Learn how to build on <strong>Ethereum</strong>; the superpowers and the gotchas.
-          </Text>
 
           <Center
             mb={{

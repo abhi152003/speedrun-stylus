@@ -20,8 +20,8 @@ const SiteFooter = () => {
           <HStack alignItems="center">
             <span>Built with</span> <HeartFilled /> <span>at</span>
           </HStack>
-          <Link color={linkColor} href="https://buidlguidl.com/" isExternal>
-            BuidlGuidl
+          <Link color={linkColor} href="https://arbitrum.io/stylus" isExternal>
+            Stylus
           </Link>
         </HStack>
       </HStack>

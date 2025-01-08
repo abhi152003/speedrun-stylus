@@ -5,7 +5,7 @@ export const challengeInfo = {
     label: "🚩 Challenge 0: 🎟 Simple Counter Example",
     disabled: false,
     description:
-      "🎫 Create a simple Counter to learn the basics of 🏗 scaffold-eth with RUST. You'll use 👷‍♀️ Stylus Nitro Devnode to compile and deploy your smart contracts. Then, you'll use a template React app filled with essential Ethereum components and hooks. Finally, you'll deploy your Counter Contract to a public network to share with friends! 🚀",
+      "🎫 Create a simple Counter to learn the basics of 🏗 scaffold-eth with RUST. You'll use 👷‍♀️ Stylus Nitro Devnode to compile and deploy your smart contracts. Then, you'll use a template React app filled with essential components and hooks. Finally, you'll deploy your Counter Contract to a public network to share with friends! 🚀",
     previewImage: "/assets/challenges/counter.svg",
     dependencies: [],
   },
@@ -15,7 +15,7 @@ export const challengeInfo = {
     label: "🚩 Challenge 1: 🖼️ Simple NFT Example",
     disabled: false,
     description:
-      "Dive into creating an NFT project to master the essentials of 🛠 scaffold-eth with RUST. Use 💻 Stylus Nitro Devnode to design, compile, and deploy smart contracts that bring NFTs to life. Pair your work with a dynamic React app featuring all the tools 🧩 you need to interact with Ethereum. Wrap it up by deploying your NFT contract to a public network, where users can mint 🎟, verify 🔍, and manage their NFTs effortlessly! 🌐",
+      "Dive into creating an NFT project to master the essentials of 🛠 scaffold-eth with RUST. Use 💻 Stylus Nitro Devnode to design, compile, and deploy smart contracts that bring NFTs to life. Pair your work with a dynamic React app featuring all the tools 🧩. Wrap it up by deploying your NFT contract to a public network, where users can mint 🎟, verify 🔍, and manage their NFTs effortlessly! 🌐",
     previewImage: "/assets/challenges/simpleNFT.svg",
     dependencies: [],
   },
