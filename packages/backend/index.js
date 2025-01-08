@@ -426,7 +426,7 @@ app.post("/api/frame", (req, res) => {
 
     if (idAsNumber === 6) {
       res.status(200).send(`<!DOCTYPE html><html><head>
-      <title>Speed Run Ethereum</title>
+      <title>speed run stylus</title>
       <meta property="og:image" content="${baseUrl}/frames/buidlguidl.jpg" />
       <meta property="fc:frame" content="vNext" />
       <meta property="fc:frame:image" content="${baseUrl}/frames/buidlguidl.jpg" />
@@ -442,7 +442,7 @@ app.post("/api/frame", (req, res) => {
       </head></html>`);
     } else {
       res.status(200).send(`<!DOCTYPE html><html><head>
-        <title>Speed Run Ethereum</title>
+        <title>speed run stylus</title>
         <meta property="og:image" content="${baseUrl}/frames/challenge-${idAsNumber}.png" />
         <meta property="fc:frame" content="vNext" />
         <meta property="fc:frame:image" content="${baseUrl}/frames/challenge-${idAsNumber}.png" />

@@ -69,7 +69,7 @@ export default function HomeView({ connectedBuilder, userProvider }) {
             <HeroLogo maxW="600px" height="auto" />
           </Center>
           <Button onClick={handleCtaClick} colorScheme="green" mt={4} size="lg">
-            Start Building on Ethereum
+            Start Building on Arbitrum using Stylus
           </Button>
         </Container>
         <Box

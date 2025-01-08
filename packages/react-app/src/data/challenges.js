@@ -6,7 +6,7 @@ export const challengeInfo = {
     disabled: false,
     description:
       "🎫 Create a simple Counter to learn the basics of 🏗 scaffold-eth with RUST. You'll use 👷‍♀️ Stylus Nitro Devnode to compile and deploy your smart contracts. Then, you'll use a template React app filled with essential Ethereum components and hooks. Finally, you'll deploy your Counter Contract to a public network to share with friends! 🚀",
-    previewImage: "/assets/challenges/stakingToken.svg",
+    previewImage: "/assets/challenges/counter.svg",
     dependencies: [],
   },
   "simple-nft-example": {
@@ -36,7 +36,7 @@ export const challengeInfo = {
     label: "🚩 Challenge 3: 🎲 Multisig Wallet",
     disabled: false,
     description: `👩‍👩‍👧‍👧 A multi-signature smart contract secures assets by requiring multiple owners to confirm transactions before execution. Transactions are tracked in an array of TxStruct objects, and owners can submit, confirm, or revoke confirmations. A transaction is executed once it reaches the required number of confirmations, ensuring that no single owner can act alone, providing enhanced security for the assets.`,
-    previewImage: "/assets/challenges/diceGame.svg",
+    previewImage: "/assets/challenges/multiSig.svg",
     // dependencies: ["simple-counter-example", "simple-nft-example", "vending-machine"],
     dependencies: [],
   },
@@ -60,7 +60,7 @@ export const challengeInfo = {
     checkpoint: true,
     disabled: false,
     description:
-      "The Arbitrum Stylus Collective is a hub for innovative builders leveraging Stylus to push the boundaries of Web3. A space to showcase your Rust and Solidity creations, connect with fellow developers, and grow the ecosystem. Start crafting your Web3 legacy by sharing your ZKP, vending machine, or DeFi build today! 🚀",
+      "The Arbitrum Stylus Collective is a hub for innovative builders leveraging Stylus to push the boundaries of Web3. A space to showcase your Rust and Solidity creations, connect with fellow developers, and grow the ecosystem.",
     previewImage: "assets/bg.png",
     dependencies: [],
     externalLink: {
@@ -75,7 +75,7 @@ export const challengeInfo = {
     disabled: false,
     description:
       "🔐 Master Zero-Knowledge Proofs with Arbitrum Stylus! Build and deploy smart contracts that utilize ZKPs for private verification, enabling age validation, balance checks, and password authentication. Spin up an Arbitrum Stylus Nitro dev node, design intuitive circuits, and integrate a React-powered frontend for seamless proof generation and verification. Deploy your contracts to a public testnet and publish your app on Vercel, creating a user-friendly platform for secure and efficient blockchain interactions. 🚀 Dive in to explore the cutting edge of blockchain privacy!",
-    previewImage: "assets/challenges/state.svg",
+    previewImage: "assets/challenges/zkp.svg",
     // dependencies: ["simple-counter-example", "simple-nft-example", "vending-machine", "multisig-wallet"],
     dependencies: [],
   }
