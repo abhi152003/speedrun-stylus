@@ -81,7 +81,7 @@ export const challengeInfo = {
   }
 };
 
-const githubChallengesRepoBaseRawUrl = "https://raw.githubusercontent.com/abhi152003/speedrun-rust";
+const githubChallengesRepoBaseRawUrl = "https://raw.githubusercontent.com/abhi152003/speedrun_stylus";
 
 export const getGithubChallengeReadmeUrl = challengeId =>
   `${githubChallengesRepoBaseRawUrl}/${challengeInfo[challengeId].branchName}/README.md`;

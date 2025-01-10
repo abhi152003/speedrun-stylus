@@ -1,10 +1,7 @@
-# 🏃‍♀️ Speed Run Ethereum [![Netlify Status](https://api.netlify.com/api/v1/badges/f925ecf3-0b4b-4545-8412-7b860c76b7f1/deploy-status)](https://app.netlify.com/sites/wonderful-kirch-4ab41a/deploys)
-
+# 🏃‍♀️ Speed Run Stylus 
 ![SRE Thumbnail](./packages/react-app/public/thumbnail.png)
 
-Speed Run Ethereum aims to provide a structured learning path for onboarding developers to Ethereum.
-
-[🏃‍♀️Ethereum Dev Speed Run](https://medium.com/@austin_48503/%EF%B8%8Fethereum-dev-speed-run-bd72bcba6a4c) with a framework for submitting challenges, get feedback from ethereum builders, and in the process unlocking new challenges and prof of completion.
+Speed Run Stylus aims to provide a structured learning path for onboarding developers to Arbitrum.
 
 ---
 
@@ -13,9 +10,9 @@ Speed Run Ethereum aims to provide a structured learning path for onboarding dev
 Get the project code:
 
 ```bash
-git clone git@github.com:BuidlGuidl/SpeedRunEthereum.git
+git clone https://github.com/abhi152003/speedrun-stylus.git
 
-cd SpeedRunEthereum
+cd speedrun-stylus
 ```
 
 Install dependencies:

@@ -1,5 +1,6 @@
 require("dotenv").config();
 const firebaseAdmin = require("firebase-admin");
+const fs = require("fs");
 
 console.log("using firebase");
 if (process.env.NODE_ENV === "test") {
@@ -10,7 +11,15 @@ if (process.env.NODE_ENV === "test") {
   );
 }
 
+// console.log('Credentials path:', process.env.GOOGLE_APPLICATION_CREDENTIALS);
+
 if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+  const credentialsPath = "./speedrun-stylus.json";
+  fs.writeFileSync(
+    credentialsPath,
+    Buffer.from(process.env.GOOGLE_APPLICATION_CREDENTIALS, "base64").toString("utf-8")
+  );
+  process.env.GOOGLE_APPLICATION_CREDENTIALS = credentialsPath;
   firebaseAdmin.initializeApp({
     credential: firebaseAdmin.credential.applicationDefault(),
   });
