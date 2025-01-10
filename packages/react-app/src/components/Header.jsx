@@ -6,7 +6,6 @@ import { USER_ROLES } from "../helpers/constants";
 import { ENVIRONMENT } from "../constants";
 import useCustomColorModes from "../hooks/useCustomColorModes";
 import HeaderLogo from "./icons/HeaderLogo";
-import speedrunLogo from "../../speedrun-logo.png";
 
 export default function Header({
   injectedProvider,
@@ -60,13 +59,12 @@ export default function Header({
         {!isHomepage && (
           <Flex shrink={0} mr={9} mt={{ base: userIsRegistered ? 4 : 0, lg: 0 }}>
             <NavLink to="/" exact>
-              {/* <HeaderLogo maxW="205px" height="auto" /> */}
-              <chakra.img
+              <HeaderLogo maxW="205px" height="auto" />
+              {/* <chakra.img
                     src={speedrunLogo}
                     width="200px"
                     height="auto"
-                    {...props} 
-                  />
+                  /> */}
             </NavLink>
           </Flex>
         )}
