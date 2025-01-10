@@ -2,7 +2,6 @@
 // ☝️ we want this component to be usable with chakra props
 import React from "react";
 import { chakra, useColorModeValue, useToken } from "@chakra-ui/react";
-import speedrunLogo from "../../speedrun-logo.png";
 
 const HeaderLogo = props => {
   const [sreDefault, sreDarkDefault] = useToken("colors", ["sre.default", "sreDark.default"]);
@@ -10,7 +9,7 @@ const HeaderLogo = props => {
 
   return (
     <chakra.img
-      src={speedrunLogo}
+      src='/speedrun-logo.png'
       width="200px"
       height="auto"
       {...props} // This allows props to override default values
