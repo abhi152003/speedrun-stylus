@@ -2,7 +2,7 @@
 // ☝️ we want this component to be usable with chakra props
 import React from "react";
 import { chakra, useColorModeValue, useToken } from "@chakra-ui/react";
-import speedrunLogo from "../../images/speedrun-logo.png";
+import speedrunLogo from "../../speedrun-logo.png";
 
 const HeaderLogo = props => {
   const [sreDefault, sreDarkDefault] = useToken("colors", ["sre.default", "sreDark.default"]);
