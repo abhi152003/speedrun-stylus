@@ -9,7 +9,7 @@ const HeaderLogo = props => {
   const fillColor = useColorModeValue(sreDefault, sreDarkDefault);
 
   return (
-    <img
+    <chakra.img
       src={speedrunLogo}
       width="200px"
       height="auto"
