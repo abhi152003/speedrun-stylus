@@ -1,0 +1,26 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "packages/react-app/**/*",
+        "use": "@vercel/static-build",
+        "config": {
+          "distDir": "build"
+        }
+      },
+      {
+        "src": "packages/backend/index.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "/api/(.*)",
+        "destination": "packages/backend/index.js"
+      },
+      {
+        "source": "/(.*)",
+        "destination": "/packages/react-app/index.html"
+      }
+    ]
+  }
