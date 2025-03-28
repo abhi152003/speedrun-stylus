@@ -365,7 +365,7 @@ const ChallengeExpandedCard = ({
             <Image
               src={challenge.previewImage}
               alt={challenge.label}
-              maxW={isPngImage(challenge.previewImage) ? { base: "300px", lg: "430px" } : { lg: "490px" }}
+              maxW={isPngImage(challenge.previewImage) ? { base: "300px", lg: "330px" } : { lg: "490px" }}
               mr={{ base: 0, lg: "50px" }}
             />
           ) : (
