@@ -61,7 +61,7 @@ export const challengeInfo = {
     disabled: false,
     description:
       "The Arbitrum Stylus Collective is a hub for innovative builders leveraging Stylus to push the boundaries of Web3. A space to showcase your Rust and Solidity creations, connect with fellow developers, and grow the ecosystem.",
-    previewImage: "assets/bg.png",
+    previewImage: "assets/bg.svg",
     dependencies: [],
     externalLink: {
       link: "https://buidlguidl.com/",
@@ -74,8 +74,8 @@ export const challengeInfo = {
     label: "🚩 Challenge 5: 👶 ZKP - Age Verifier",
     disabled: false,
     description:
-      "🔐 Master Zero-Knowledge Proofs with Arbitrum Stylus! Build and deploy a smart contract that utilizes ZKPs for private age verification, enabling users to prove their age without revealing their birthdate. Spin up an Arbitrum Stylus Nitro dev node, design an intuitive age verification circuit, and integrate a React-powered frontend for seamless proof generation and verification. Deploy your contract to a public testnet and publish your app on Vercel, creating a user-friendly platform for secure and efficient age validation on the blockchain. 🚀 Dive in to explore the cutting edge of blockchain privacy with age verification!",
-    previewImage: "assets/challenges/zkp.svg",
+      "Build a privacy-preserving age verification system using Zero-Knowledge Proofs! Prove users are above a certain age (e.g., 18+) without revealing their exact birthdate or identity. Leverage ZK circuits to validate age data and integrate it into a slick Next.js frontend. Deploy on Arbitrum Stylus Nitro for lightning-fast proofs and privacy at scale. Wrap it up with a Vercel deployment for smooth, trustless age-gating in any app or platform!👶🛡️",
+    previewImage: "assets/challenges/age.svg",
     // dependencies: ["simple-counter-example", "simple-nft-example", "vending-machine", "multisig-wallet"],
     dependencies: [],
   },
@@ -85,8 +85,8 @@ export const challengeInfo = {
     label: "🚩 Challenge 6: 💰 ZKP - Balance Checker",
     disabled: false,
     description:
-      "🔐 Unlock the Power of Zero-Knowledge Proofs with Arbitrum Stylus! Create and deploy a smart contract that leverages ZKPs for private balance verification, allowing users to confirm their balance without disclosing the exact amount. Set up an Arbitrum Stylus Nitro dev node, design a sophisticated balance verification circuit, and integrate a sleek Next.js frontend for effortless proof generation and validation. Deploy your contract to a public testnet and launch your application on Vercel, establishing a user-friendly platform for secure and efficient balance checks on the blockchain. 🚀 Immerse yourself in the forefront of blockchain privacy with balance verification!",
-    previewImage: "assets/challenges/zkp.svg",
+      "🔐 Design a secure system that proves a user has a minimum token balance—without exposing the exact amount! Using ZKPs, generate proofs that validate wallet holdings above a threshold. Pair your smart contract logic on Arbitrum Stylus with a clean frontend that lets users verify balances privately. Great for token-gated access, whitelists, or DeFi participation. Ship it via Vercel for instant, privacy-first access. 🧮🔍",
+    previewImage: "assets/challenges/balance.svg",
     // dependencies: ["simple-counter-example", "simple-nft-example", "vending-machine", "multisig-wallet"],
     dependencies: [],
   },
@@ -96,8 +96,8 @@ export const challengeInfo = {
     label: "🚩 Challenge 7: 🔑 ZKP - Password Verifier",
     disabled: false,
     description:
-      "🔑 Unlock the potential of Zero-Knowledge Proofs with Arbitrum Stylus! Build and deploy a smart contract that uses ZKPs for private password verification, allowing users to prove they know a password without revealing the actual password. Set up an Arbitrum Stylus Nitro dev node, create a smart password verification circuit, and integrate a user-friendly Next.js frontend for easy proof generation and checking. Deploy your contract to a public testnet and launch your application on Vercel, providing a simple platform for secure and efficient password checks on the blockchain. 🚀 Dive into the exciting world of blockchain privacy with password verification!",
-    previewImage: "assets/challenges/zkp.svg",
+      "🔑No more password sharing! Build a password verifier that confirms knowledge of a password without revealing it. Use ZK-SNARKs to create proof-of-knowledge circuits, deploy them on Arbitrum Stylus, and build a secure frontend to generate and verify proofs. Perfect for login systems, secret validation, or private voting. Launch on Vercel to deliver fast, trustless password validation. 🧠🔒🔑",
+    previewImage: "assets/challenges/location.svg",
     // dependencies: ["simple-counter-example", "simple-nft-example", "vending-machine", "multisig-wallet"],
     dependencies: [],
   },
@@ -107,8 +107,8 @@ export const challengeInfo = {
     label: "🚩 Challenge 8: 📍 ZKP - Location Verifier",
     disabled: false,
     description:
-      "📍 Unlock the potential of Zero-Knowledge Proofs with Arbitrum Stylus! Build and deploy a smart contract that uses ZKPs for private location verification, allowing users to prove they are within a specific geographic region (like California) without revealing their exact coordinates. Set up an Arbitrum Stylus Nitro dev node, create a smart location verification circuit, and integrate a user-friendly Next.js frontend for easy proof generation and checking. Deploy your contract to a public testnet and launch your application on Vercel, providing a simple platform for secure and efficient location verification on the blockchain. 🚀 Dive into the exciting world of blockchain privacy with location-based verification!",
-    previewImage: "assets/challenges/zkp.svg",
+      "📍 Prove you’re in the right place—without revealing your location! Use Zero-Knowledge Proofs to create a location-based verifier app. Generate proofs that confirm geographic conditions (e.g., within a city or country) while keeping coordinates private. Deploy smart contracts on Arbitrum Stylus and build a map-friendly frontend with location privacy baked in. Perfect for geo-restricted content, voting, or access control. 🌍🛰️",
+    previewImage: "assets/challenges/model.svg",
     // dependencies: ["simple-counter-example", "simple-nft-example", "vending-machine", "multisig-wallet"],
     dependencies: [],
   },
@@ -118,8 +118,8 @@ export const challengeInfo = {
     label: "🚩 Challenge 9: 📊 ZKP - Model Verifier",
     disabled: false,
     description:
-      "🧠🤖📊 Unlock the power of Zero-Knowledge Proofs with Arbitrum Stylus! Build and deploy a smart contract that utilizes ZKPs for private model verification, enabling users to prove the accuracy of their model computations without disclosing sensitive parameters. Set up an Arbitrum Stylus Nitro dev node, create a robust model verification circuit, and integrate a user-friendly Next.js frontend for seamless proof generation and validation. Deploy your contract to a public testnet and launch your application on Vercel, offering a straightforward platform for secure and efficient model verification on the blockchain. 🚀 Immerse yourself in the innovative realm of blockchain privacy with model-based verification!",
-    previewImage: "assets/challenges/zkp.svg",
+      "Prove your AI model meets required benchmarks or is built a certain way—without revealing the model itself! Use ZKPs to validate model accuracy, structure, or source on-chain. Deploy verification contracts via Arbitrum Stylus, build a frontend for model creators and consumers, and use Vercel for streamlined app delivery. Ideal for AI marketplaces, provable research, or secure collaboration. 🧠🧾",
+    previewImage: "assets/challenges/model.svg",
     // dependencies: ["simple-counter-example", "simple-nft-example", "vending-machine", "multisig-wallet"],
     dependencies: [],
   },
@@ -129,8 +129,8 @@ export const challengeInfo = {
     label: "🚩 Challenge 10: 📧 ZKP - Email Domain Verifier",
     disabled: false,
     comingSoon: true,
-    description: "🧠📧🔒 Dive into the world of Zero-Knowledge Proofs with Arbitrum Stylus! Build and deploy a smart contract that leverages ZKPs to privately verify email domain ownership, allowing users to prove their email belongs to a specific domain (e.g., 'gmail.com') without revealing the full email address. Set up an Arbitrum Stylus Nitro dev node, create an optimized email domain verification circuit using the ZK Email SDK, and integrate a Next.js frontend for effortless proof generation and validation. Deploy your contract to a public testnet and host your application on Vercel, delivering a secure, privacy-preserving email verification platform on the blockchain. 🚀 Explore cutting-edge blockchain privacy with this innovative email verification challenge!",
-    previewImage: "assets/challenges/zkp.svg",
+    description: "Build an app that verifies users own an email with a specific domain—without revealing the full address. Use ZKPs to prove domain membership (e.g., @university.edu) while keeping the full identity private. Arbitrum Stylus handles smart contract verification, and a frontend built with Next.js enables easy interactions. Deploy on Vercel for domain-gated access with bulletproof privacy. ✅📬",
+    previewImage: "assets/challenges/email.svg",
     dependencies: []
   }
 };
