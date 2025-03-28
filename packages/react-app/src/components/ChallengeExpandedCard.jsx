@@ -88,6 +88,10 @@ const ChallengeExpandedCard = ({
   const isChallengeLocked = challenge.disabled || !builderHasCompletedDependenciesChallenges;
   const isChallengeComingSoon = challenge.comingSoon;
 
+  const isPngImage = (imageUrl) => {
+    return imageUrl?.toLowerCase().endsWith('.png');
+  };
+
   if (challenge.checkpoint) {
     return (
       <Center
@@ -361,7 +365,7 @@ const ChallengeExpandedCard = ({
             <Image
               src={challenge.previewImage}
               alt={challenge.label}
-              maxW={{ lg: "490px" }}
+              maxW={isPngImage(challenge.previewImage) ? { base: "300px", lg: "430px" } : { lg: "490px" }}
               mr={{ base: 0, lg: "50px" }}
             />
           ) : (
