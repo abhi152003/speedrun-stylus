@@ -12,7 +12,7 @@ type SubmitChallengeModalProps = {
 export const SubmitChallengeModal = forwardRef<HTMLDialogElement, SubmitChallengeModalProps>(
   ({ closeModal, challengeId }, ref) => {
     const [frontendUrl, setFrontendUrl] = useState("");
-    const [contractUrl, setContractUrl] = useState("");
+    const [githubRepoUrl, setGithubRepoUrl] = useState("");
 
     const { submitChallenge, isPending } = useSubmitChallenge({
       onSuccess: closeModal,
@@ -35,8 +35,22 @@ export const SubmitChallengeModal = forwardRef<HTMLDialogElement, SubmitChalleng
           <div className="flex flex-col space-y-5">
             <div className="flex flex-col gap-1.5 w-full">
               <div className="flex items-base ml-2">
-                <span className="text-sm font-medium mr-2 leading-none">Deployed URL</span>
-                <div className="tooltip" data-tip="Your deployed challenge URL on vercel">
+                <span className="text-sm font-medium mr-2 leading-none">GitHub Repository</span>
+                <div className="tooltip" data-tip="Your GitHub repository URL containing the challenge code">
+                  <QuestionMarkCircleIcon className="h-4 w-4" />
+                </div>
+              </div>
+              <InputBase
+                placeholder="https://github.com/yourusername/your-repo"
+                value={githubRepoUrl}
+                onChange={e => setGithubRepoUrl(e)}
+              />
+            </div>
+
+            <div className="flex flex-col gap-1.5 w-full">
+              <div className="flex items-base ml-2">
+                <span className="text-sm font-medium mr-2 leading-none">Deployed URL (Optional)</span>
+                <div className="tooltip" data-tip="Your deployed challenge URL (e.g., on Vercel)">
                   <QuestionMarkCircleIcon className="h-4 w-4" />
                 </div>
               </div>
@@ -47,25 +61,11 @@ export const SubmitChallengeModal = forwardRef<HTMLDialogElement, SubmitChalleng
               />
             </div>
 
-            <div className="flex flex-col gap-1.5 w-full">
-              <div className="flex items-base ml-2">
-                <span className="text-sm font-medium mr-2 leading-none">Etherscan URL</span>
-                <div className="tooltip" data-tip="Your verfied contract URL on etherscan">
-                  <QuestionMarkCircleIcon className="h-4 w-4" />
-                </div>
-              </div>
-              <InputBase
-                placeholder="https://sepolia.etherscan.io/address/**YourContractAddress**"
-                value={contractUrl}
-                onChange={e => setContractUrl(e)}
-              />
-            </div>
-
             <div className="modal-action">
               <button
                 className="btn btn-primary self-center"
-                disabled={!Boolean(frontendUrl && contractUrl) || isPending}
-                onClick={() => submitChallenge({ challengeId, frontendUrl, contractUrl })}
+                disabled={!githubRepoUrl || isPending}
+                onClick={() => submitChallenge({ challengeId, frontendUrl, githubRepoUrl })}
               >
                 {isPending ? (
                   <>

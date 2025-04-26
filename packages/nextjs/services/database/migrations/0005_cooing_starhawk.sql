@@ -1,0 +1,1 @@
+ALTER TABLE "user_challenges" ADD COLUMN "github_repo_url" varchar(255);

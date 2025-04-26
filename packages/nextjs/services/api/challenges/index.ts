@@ -4,7 +4,7 @@ export const submitChallenge = async ({
   challengeId,
   userAddress,
   frontendUrl,
-  contractUrl,
+  githubRepoUrl,
   signature,
 }: ChallengeSubmitPayload & { challengeId: string }) => {
   const response = await fetch(`/api/challenges/${challengeId}/submit`, {
@@ -15,12 +15,13 @@ export const submitChallenge = async ({
     body: JSON.stringify({
       userAddress,
       frontendUrl,
-      contractUrl,
+      githubRepoUrl,
       signature,
     }),
   });
 
   if (!response.ok) {
+    console.log("response", response);
     throw new Error(`Failed to submit challenge: ${response.status} ${response.statusText}`);
   }
 

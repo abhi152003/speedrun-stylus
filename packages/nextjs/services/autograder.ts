@@ -5,31 +5,47 @@ export type AutogradingResult = {
 
 export async function submitToAutograder({
   challengeId,
-  contractUrl,
+  githubRepoUrl,
 }: {
   challengeId: number;
-  contractUrl: string;
+  githubRepoUrl: string;
 }): Promise<AutogradingResult> {
-  const contractUrlObject = new URL(contractUrl);
-  const blockExplorer = contractUrlObject.host;
-  const address = contractUrlObject.pathname.replace("/address/", "");
+  console.log(`Submitting to autograder for challenge ${challengeId} with repo URL: ${githubRepoUrl}`);
+  const githubUrlObject = new URL(githubRepoUrl);
+  const path = githubUrlObject.pathname.split("/").filter(Boolean);
 
-  const response = await fetch(`${process.env.AUTOGRADING_SERVER}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ challenge: challengeId, address, blockExplorer }),
-  });
-
-  const data = await response.json();
-
-  if (!response.ok) {
+  if (path.length < 2) {
     return {
       success: false,
-      feedback: data.error || `Autograder error: ${response.status} ${response.statusText}`,
+      feedback: "Invalid GitHub repository URL format",
     };
   }
 
-  return data;
+  const owner = path[0];
+  const repo = path[1];
+
+  try {
+    const verifyResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
+      headers: {
+        // Add GitHub token if needed for rate limiting
+        // 'Authorization': `token ${process.env.GITHUB_TOKEN}`
+      },
+    });
+
+    if (!verifyResponse.ok) {
+      return {
+        success: false,
+        feedback: "GitHub repository does not exist or is not accessible",
+      };
+    }
+    return {
+      success: true,
+      feedback: "GitHub repository verified successfully",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      feedback: `Error verifying GitHub repository: ${error}`,
+    };
+  }
 }

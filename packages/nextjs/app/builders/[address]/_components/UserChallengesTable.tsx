@@ -19,8 +19,8 @@ const ChallengeRow = ({ challenge }: { challenge: UserChallenges[number] }) => {
         )}
       </td>
       <td>
-        {challenge.contractUrl ? (
-          <a href={challenge.contractUrl} target="_blank" rel="noopener noreferrer" className="link">
+        {challenge.githubRepoUrl ? (
+          <a href={challenge.githubRepoUrl} target="_blank" rel="noopener noreferrer" className="link">
             Code
           </a>
         ) : (
@@ -59,7 +59,7 @@ export const UserChallengesTable = ({ challenges }: { challenges: UserChallenges
           <thead>
             <tr className="text-sm">
               <th>NAME</th>
-              <th>CONTRACT</th>
+              <th>GITHUB REPO</th>
               <th>LIVE DEMO</th>
               <th>UPDATED</th>
               <th>STATUS</th>

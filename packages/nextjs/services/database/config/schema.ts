@@ -94,6 +94,7 @@ export const userChallenges = pgTable(
       .references(() => challenges.id),
     frontendUrl: varchar({ length: 255 }),
     contractUrl: varchar({ length: 255 }),
+    githubRepoUrl: varchar({ length: 255 }),
     reviewComment: text(), // Feedback provided during autograding
     submittedAt: timestamp().notNull().defaultNow(),
     reviewAction: reviewActionEnum(),
