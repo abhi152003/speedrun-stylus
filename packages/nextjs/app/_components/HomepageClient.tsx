@@ -1,7 +1,5 @@
 "use client";
 
-import { AfterSreCard } from "./AfterSreCard";
-import { AfterSreLine } from "./AfterSreLine";
 import { ChallengeExpandedCard } from "./ChallengeExpandedCard";
 import { Hero } from "./Hero";
 import { JoinBGCard } from "./JoinBGCard";
@@ -20,8 +18,14 @@ export const HomepageClient = ({ challenges }: { challenges: Challenges }) => {
 
   return (
     <div>
-      <Hero firstChallengeId={"simple-nft-example"} />
+      <Hero firstChallengeId={"simple-counter-example"} />
       <div className="bg-base-200">
+        <ChallengeExpandedCard
+          key={ChallengeId.SIMPLE_COUNTER_EXAMPLE}
+          challengeId={ChallengeId.SIMPLE_COUNTER_EXAMPLE}
+          userChallenges={userChallenges}
+          challenges={challenges}
+        />
         <ChallengeExpandedCard
           key={ChallengeId.SIMPLE_NFT_EXAMPLE}
           challengeId={ChallengeId.SIMPLE_NFT_EXAMPLE}
@@ -29,86 +33,85 @@ export const HomepageClient = ({ challenges }: { challenges: Challenges }) => {
           challenges={challenges}
         />
         <ChallengeExpandedCard
-          key={ChallengeId.DECENTRALIZED_STAKING}
-          challengeId={ChallengeId.DECENTRALIZED_STAKING}
+          key={ChallengeId.VENDING_MACHINE}
+          challengeId={ChallengeId.VENDING_MACHINE}
           userChallenges={userChallenges}
           challenges={challenges}
         />
         <ChallengeExpandedCard
-          key={ChallengeId.TOKEN_VENDOR}
-          challengeId={ChallengeId.TOKEN_VENDOR}
+          key={ChallengeId.MULTISIG_WALLET}
+          challengeId={ChallengeId.MULTISIG_WALLET}
           userChallenges={userChallenges}
           challenges={challenges}
         />
         <ChallengeExpandedCard
-          key={ChallengeId.DICE_GAME}
-          challengeId={ChallengeId.DICE_GAME}
-          userChallenges={userChallenges}
-          challenges={challenges}
-        />
-        <ChallengeExpandedCard
-          key={ChallengeId.MINIMUM_VIABLE_EXCHANGE}
-          challengeId={ChallengeId.MINIMUM_VIABLE_EXCHANGE}
+          key={ChallengeId.UNISWAP_V2_STYLUS}
+          challengeId={ChallengeId.UNISWAP_V2_STYLUS}
           userChallenges={userChallenges}
           challenges={challenges}
         />
 
         <JoinBGCard userChallenges={userChallenges} user={user} />
+
         <ChallengeExpandedCard
-          key={ChallengeId.STABLECOINS}
-          challengeId={ChallengeId.STABLECOINS}
+          key={ChallengeId.ZKP_AGE}
+          challengeId={ChallengeId.ZKP_AGE}
+          userChallenges={userChallenges}
+          challenges={challenges}
+        />
+        <ChallengeExpandedCard
+          key={ChallengeId.ZKP_BALANCE}
+          challengeId={ChallengeId.ZKP_BALANCE}
+          userChallenges={userChallenges}
+          challenges={challenges}
+        />
+        <ChallengeExpandedCard
+          key={ChallengeId.ZKP_PASSWORD}
+          challengeId={ChallengeId.ZKP_PASSWORD}
+          userChallenges={userChallenges}
+          challenges={challenges}
+        />
+        <ChallengeExpandedCard
+          key={ChallengeId.ZKP_LOCATION}
+          challengeId={ChallengeId.ZKP_LOCATION}
+          userChallenges={userChallenges}
+          challenges={challenges}
+        />
+        <ChallengeExpandedCard
+          key={ChallengeId.ZKP_MODEL}
+          challengeId={ChallengeId.ZKP_MODEL}
+          userChallenges={userChallenges}
+          challenges={challenges}
+        />
+        <ChallengeExpandedCard
+          key={ChallengeId.ZK_EMAIL_VERIFIER}
+          challengeId={ChallengeId.ZK_EMAIL_VERIFIER}
           userChallenges={userChallenges}
           challenges={challenges}
           comingSoon
-        />
-        <ChallengeExpandedCard
-          key={ChallengeId.PREDICTION_MARKETS}
-          challengeId={ChallengeId.PREDICTION_MARKETS}
-          userChallenges={userChallenges}
-          challenges={challenges}
-          comingSoon
-        />
-        <ChallengeExpandedCard
-          key={ChallengeId.DEPLOY_TO_L2}
-          challengeId={ChallengeId.DEPLOY_TO_L2}
-          userChallenges={userChallenges}
-          challenges={challenges}
-          comingSoon
-        />
-        <ChallengeExpandedCard
-          key={ChallengeId.MULTISIG}
-          challengeId={ChallengeId.MULTISIG}
-          userChallenges={userChallenges}
-          challenges={challenges}
-        />
-        <ChallengeExpandedCard
-          key={ChallengeId.SVG_NFT}
-          challengeId={ChallengeId.SVG_NFT}
-          userChallenges={userChallenges}
-          challenges={challenges}
         />
 
-        <div className="flex flex-col xl:flex-row justify-center mx-auto relative">
-          <AfterSreLine />
-          <div className="hidden xl:flex flex-grow bg-[#96EAEA] dark:bg-[#3AACAD]" />
-          <AfterSreCard
-            title="ETH Tech Tree"
-            description="Check this advanced Solidity challenges to test your Ethereum dev skills."
-            externalLink="https://www.ethtechtree.com"
-            buttonText="Join"
-            previewImage="/assets/challenges/techTree.svg"
-            bgClassName="bg-[#96EAEA] dark:bg-[#3AACAD]"
-          />
-          <AfterSreCard
-            title="Capture the Flag"
-            description="Join our CTF game and hack your way through 12 Smart Contract challenges."
-            externalLink="https://ctf.buidlguidl.com"
-            buttonText="Start"
-            previewImage="/assets/challenges/ctf.svg"
-            bgClassName="bg-base-300"
-          />
-          <div className="hidden xl:flex flex-grow bg-base-300" />
-        </div>
+        {/* <div className="flex flex-col xl:flex-row justify-center mx-auto relative">  
+          <AfterSreLine />  
+          <div className="hidden xl:flex flex-grow bg-[#96EAEA] dark:bg-[#3AACAD]" />  
+          <AfterSreCard  
+            title="ETH Tech Tree"  
+            description="Check this advanced Solidity challenges to test your Ethereum dev skills."  
+            externalLink="https://www.ethtechtree.com"  
+            buttonText="Join"  
+            previewImage="/assets/challenges/techTree.svg"  
+            bgClassName="bg-[#96EAEA] dark:bg-[#3AACAD]"  
+          />  
+          <AfterSreCard  
+            title="Capture the Flag"  
+            description="Join our CTF game and hack your way through 12 Smart Contract challenges."  
+            externalLink="https://ctf.buidlguidl.com"  
+            buttonText="Start"  
+            previewImage="/assets/challenges/ctf.svg"  
+            bgClassName="bg-base-300"  
+          />  
+          <div className="hidden xl:flex flex-grow bg-base-300" />  
+        </div>   */}
       </div>
     </div>
   );

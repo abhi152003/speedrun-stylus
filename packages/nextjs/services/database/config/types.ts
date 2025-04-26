@@ -12,17 +12,18 @@ export enum UserRole {
 }
 
 export enum ChallengeId {
+  SIMPLE_COUNTER_EXAMPLE = "simple-counter-example",
   SIMPLE_NFT_EXAMPLE = "simple-nft-example",
-  DECENTRALIZED_STAKING = "decentralized-staking",
-  TOKEN_VENDOR = "token-vendor",
-  DICE_GAME = "dice-game",
-  MINIMUM_VIABLE_EXCHANGE = "minimum-viable-exchange",
-  STABLECOINS = "stablecoins",
-  PREDICTION_MARKETS = "prediction-markets",
-  DEPLOY_TO_L2 = "deploy-to-l2",
-  MULTISIG = "multisig",
-  SVG_NFT = "svg-nft",
-  STATE_CHANNELS = "state-channels",
+  VENDING_MACHINE = "vending-machine",
+  MULTISIG_WALLET = "multisig-wallet",
+  UNISWAP_V2_STYLUS = "uniswap-v2-stylus",
+  BUIDL_GUIDL = "buidl-guidl",
+  ZKP_AGE = "zkp-age",
+  ZKP_BALANCE = "zkp-balance",
+  ZKP_PASSWORD = "zkp-password",
+  ZKP_LOCATION = "zkp-location",
+  ZKP_MODEL = "zkp-model",
+  ZK_EMAIL_VERIFIER = "zk-email-verifier",
 }
 
 export enum BatchStatus {

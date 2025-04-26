@@ -38,9 +38,9 @@ export const getChallengeDependenciesInfo = ({
 };
 
 export const JOIN_BG_DEPENDENCIES = [
+  ChallengeId.SIMPLE_COUNTER_EXAMPLE,
   ChallengeId.SIMPLE_NFT_EXAMPLE,
-  ChallengeId.DECENTRALIZED_STAKING,
-  ChallengeId.TOKEN_VENDOR,
-  ChallengeId.DICE_GAME,
-  ChallengeId.MINIMUM_VIABLE_EXCHANGE,
+  ChallengeId.VENDING_MACHINE,
+  ChallengeId.MULTISIG_WALLET,
+  ChallengeId.UNISWAP_V2_STYLUS,
 ];

@@ -98,6 +98,7 @@ export const userChallenges = pgTable(
     submittedAt: timestamp().notNull().defaultNow(),
     reviewAction: reviewActionEnum(),
     signature: varchar({ length: 255 }),
+    githubUsername: varchar({ length: 255 }),
   },
   table => [
     index("user_challenge_lookup_idx").on(table.userAddress),

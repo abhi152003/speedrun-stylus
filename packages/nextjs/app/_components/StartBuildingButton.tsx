@@ -18,7 +18,7 @@ export const StartBuildingButton = ({ firstChallengeId }: { firstChallengeId: st
       onClick={handleCtaClick}
       className="mt-4 px-6 py-3 text-lg font-medium text-white bg-primary rounded-full hover:bg-secondary-content dark:text-gray-800 transition-colors"
     >
-      Start Building on Ethereum
+      Start Building on Arbitrum using Stylus
     </Link>
   );
 };

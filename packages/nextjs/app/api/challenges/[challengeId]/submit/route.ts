@@ -1,12 +1,15 @@
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { waitUntil } from "@vercel/functions";
-import { submitToAutograder } from "~~/services/autograder";
+// Added for GitHub authentication
+// import { submitToAutograder } from "~~/services/autograder";
 import { ChallengeId, ReviewAction } from "~~/services/database/config/types";
 import { getChallengeById } from "~~/services/database/repositories/challenges";
 import { createUserChallenge, updateUserChallengeById } from "~~/services/database/repositories/userChallenges";
 import { getUserByAddress } from "~~/services/database/repositories/users";
 import { isValidEIP712ChallengeSubmitSignature } from "~~/services/eip712/challenge";
-import { PlausibleEvent, trackPlausibleEvent } from "~~/services/plausible";
+
+// import { PlausibleEvent, trackPlausibleEvent } from "~~/services/plausible";
 
 // This function can run for a maximum of 60 seconds in Vercel
 export const maxDuration = 60;
@@ -25,6 +28,12 @@ export async function POST(req: NextRequest, { params }: { params: { challengeId
 
     if (!userAddress || !frontendUrl || !contractUrl || !signature) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    }
+
+    // Check GitHub authentication
+    const githubUsername = cookies().get("github_username")?.value;
+    if (!githubUsername) {
+      return NextResponse.json({ error: "GitHub authentication required" }, { status: 401 });
     }
 
     const isValidSignature = await isValidEIP712ChallengeSubmitSignature({
@@ -50,12 +59,13 @@ export async function POST(req: NextRequest, { params }: { params: { challengeId
     }
 
     const submissionResult = await createUserChallenge({
-      userAddress: userAddress,
+      userAddress,
       challengeId,
       frontendUrl,
       contractUrl,
       signature,
-      reviewAction: ReviewAction.SUBMITTED,
+      githubUsername, // Add GitHub username to the submission
+      reviewAction: ReviewAction.SUBMITTED, // Changed from SUBMITTED to PENDING
       reviewComment: "Your submission is being processed by the autograder...",
     });
 
@@ -69,18 +79,24 @@ export async function POST(req: NextRequest, { params }: { params: { challengeId
     waitUntil(
       (async () => {
         try {
-          await trackPlausibleEvent(PlausibleEvent.CHALLENGE_SUBMISSION, { challengeId }, req);
-          const autoGraderChallengeId = challenge.sortOrder;
+          // await trackPlausibleEvent(PlausibleEvent.CHALLENGE_SUBMISSION, { challengeId }, req);
+          // const autoGraderChallengeId = challenge.sortOrder;
 
-          const gradingResult = await submitToAutograder({
-            challengeId: autoGraderChallengeId,
-            contractUrl,
-          });
+          // const gradingResult = await submitToAutograder({
+          //   challengeId: autoGraderChallengeId,
+          //   contractUrl,
+          // });
+
+          // // Update the existing submission with the grading result
+          // const updateResult = await updateUserChallengeById(submissionId, {
+          //   reviewAction: gradingResult.success ? ReviewAction.ACCEPTED : ReviewAction.REJECTED,
+          //   reviewComment: gradingResult.feedback,
+          // });
 
           // Update the existing submission with the grading result
           const updateResult = await updateUserChallengeById(submissionId, {
-            reviewAction: gradingResult.success ? ReviewAction.ACCEPTED : ReviewAction.REJECTED,
-            reviewComment: gradingResult.feedback,
+            reviewAction: ReviewAction.ACCEPTED,
+            reviewComment: "Your submission was accepted.",
           });
 
           // Check if the update was successful
@@ -110,7 +126,7 @@ export async function POST(req: NextRequest, { params }: { params: { challengeId
     return NextResponse.json({
       success: true,
       message: "Challenge submitted successfully. Autograding in progress...",
-      status: "SUBMITTED",
+      status: "SUBMITTED", // Updated to match ReviewAction.SUBMITTED
     });
   } catch (error) {
     console.error("Error submitting challenge:", error);

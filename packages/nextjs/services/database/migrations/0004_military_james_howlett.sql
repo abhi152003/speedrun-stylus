@@ -1,0 +1,1 @@
+ALTER TABLE "user_challenges" ADD COLUMN "github_username" varchar(255);

@@ -13,11 +13,11 @@ export const Hero = ({ firstChallengeId }: { firstChallengeId: string }) => {
         </div>
 
         <p className="text-center mb-5  dark:text-gray-200">
-          Learn how to build on <strong>Ethereum</strong>; the superpowers and the gotchas.
+          Learn how to build on <strong>Arbitrum</strong> using <strong>Stylus</strong>.
         </p>
 
         <div className="mb-10 lg:mb-5 mt-4 w-full flex justify-center">
-          <HeroLogo className="max-w-[600px]" />
+          <HeroLogo />
         </div>
 
         <StartBuildingButton firstChallengeId={firstChallengeId} />
