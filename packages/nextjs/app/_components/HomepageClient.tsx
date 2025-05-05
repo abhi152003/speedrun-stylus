@@ -88,7 +88,6 @@ export const HomepageClient = ({ challenges }: { challenges: Challenges }) => {
           challengeId={ChallengeId.ZK_EMAIL_VERIFIER}
           userChallenges={userChallenges}
           challenges={challenges}
-          comingSoon
         />
 
         {/* <div className="flex flex-col xl:flex-row justify-center mx-auto relative">  

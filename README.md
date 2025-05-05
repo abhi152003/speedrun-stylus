@@ -7,6 +7,7 @@ New version of [SpeedRunEthereum](https://github.com/BuidlGuidl/SpeedRunEthereum
 - Interact with other BuidlGuidl curriculums like [ETH Tech Tree](https://www.ethtechtree.com/) and [BuidlGuidl CTF](https://ctf.buidlguidl.com/)
 - Share your builds and discover what other builders are up to
 - Earn badges
+- Compete on the leaderboard with other builders
 
 You can find the repository containing the challenges [here](https://github.com/scaffold-eth/se-2-challenges).
 
@@ -52,6 +53,21 @@ yarn drizzle-kit studio
 ### Database Information
 
 We are using Drizzle with Postgres for database management. You can run `drizzle-kit` commands from the root with `yarn drizzle-kit`.
+
+#### Local Development Database
+
+For local development, we use a Docker-based Postgres instance.
+
+#### Production Database with Neon
+
+For production, we recommend using [Neon DB](https://neon.tech), a serverless Postgres service optimized for Next.js applications. To configure Neon DB:
+
+1. Sign up for a Neon account and create a project
+2. Get your connection string from the Neon dashboard
+3. Set the `POSTGRES_URL` environment variable with your Neon connection string
+4. Run migrations: `POSTGRES_URL=your-neon-connection-string yarn drizzle-kit migrate`
+
+For detailed setup instructions, see [docs/NEON_DB_SETUP.md](docs/NEON_DB_SETUP.md).
 
 ### Database Migration
 

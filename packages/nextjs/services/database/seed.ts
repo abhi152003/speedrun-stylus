@@ -49,9 +49,10 @@ async function loadSeedData() {
   }
 }
 
-const connectionUrl = new URL(process.env.POSTGRES_URL || "");
-if (connectionUrl.hostname !== "localhost") {
-  console.error("Skipping seed: Database host is not localhost");
+const connectionUrl = process.env.POSTGRES_URL ? process.env.POSTGRES_URL : null;
+console.log(`Connection URL: ${connectionUrl}`);
+if (!connectionUrl) {
+  console.error("Skipping seed: Database host is not localhost or POSTGRES_URL is not defined");
   process.exit(0);
 }
 

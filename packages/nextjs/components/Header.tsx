@@ -26,6 +26,10 @@ export const HeaderMenuLinks = ({ hideItemsByLabel, user }: { hideItemsByLabel?:
         label: "Home",
         href: "/",
       },
+      {
+        label: "Leaderboard",
+        href: "/leaderboard",
+      },
     ];
 
     const userMenuLinks: HeaderMenuLink[] = [
