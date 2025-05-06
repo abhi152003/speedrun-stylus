@@ -84,8 +84,8 @@ export const HomepageClient = ({ challenges }: { challenges: Challenges }) => {
           challenges={challenges}
         />
         <ChallengeExpandedCard
-          key={ChallengeId.ZK_EMAIL_VERIFIER}
-          challengeId={ChallengeId.ZK_EMAIL_VERIFIER}
+          key={ChallengeId.ZKP_PUBLIC_DOC_VERIFIER}
+          challengeId={ChallengeId.ZKP_PUBLIC_DOC_VERIFIER}
           userChallenges={userChallenges}
           challenges={challenges}
         />

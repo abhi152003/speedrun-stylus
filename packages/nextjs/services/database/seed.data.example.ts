@@ -178,7 +178,7 @@ export const seedChallenges: (typeof challenges.$inferInsert)[] = [
     dependencies: [],
   },
   {
-    id: ChallengeId.ZK_EMAIL_VERIFIER,
+    id: ChallengeId.ZKP_PUBLIC_DOC_VERIFIER,
     challengeName: "📧 ZKP - Email Domain Verifier",
     github: "",
     autograding: false,

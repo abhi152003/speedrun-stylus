@@ -23,7 +23,7 @@ export enum ChallengeId {
   ZKP_PASSWORD = "zkp-password",
   ZKP_LOCATION = "zkp-location",
   ZKP_MODEL = "zkp-model",
-  ZK_EMAIL_VERIFIER = "zk-email-verifier",
+  ZKP_PUBLIC_DOC_VERIFIER = "zkp-public-doc-verifier",
 }
 
 export enum BatchStatus {
