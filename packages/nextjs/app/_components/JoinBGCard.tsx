@@ -1,15 +1,8 @@
 import Image from "next/image";
-import JoinBGButton from "./JoinBGButton";
 import { UserChallenges } from "~~/services/database/repositories/userChallenges";
 import { UserByAddress } from "~~/services/database/repositories/users";
 
-export const JoinBGCard = ({
-  userChallenges = [],
-  user,
-}: {
-  userChallenges?: UserChallenges;
-  user?: UserByAddress;
-}) => {
+export const JoinBGCard = ({}: { userChallenges?: UserChallenges; user?: UserByAddress }) => {
   return (
     <div className="flex justify-center bg-[url(/assets/bgBanner_castlePlatform.svg)] bg-bottom bg-repeat-x bg-[length:150%_auto] lg:bg-auto relative overflow-hidden bg-accent">
       <Image
@@ -32,13 +25,10 @@ export const JoinBGCard = ({
         </div>
         <div className="flex flex-col lg:flex-row justify-between">
           <p className="mb-4 text-[#026262] text-center lg:text-left lg:max-w-[35%]">
-            The BuidlGuidl is a curated group of Ethereum builders creating products, prototypes, and tutorials to
-            enrich the web3 ecosystem. A place to show off your builds and meet other builders. Start crafting your Web3
-            portfolio by submitting your DEX, Multisig or SVG NFT build.
+            The Arbitrum Stylus Collective is a hub for innovative builders leveraging Stylus to push the boundaries of
+            Web3. A space to showcase your Rust and Solidity creations, connect with fellow developers, and grow the
+            ecosystem.
           </p>
-          <div className="flex items-center self-end">
-            <JoinBGButton user={user} userChallenges={userChallenges} />
-          </div>
         </div>
         <span className="absolute h-5 w-5 rounded-full bg-base-300 border-primary border-4 top-[22%] lg:top-[30%] -left-[11px] sm:-left-[13px]" />
 
