@@ -1,15 +1,17 @@
-# SpeedRunEthereum
+# SpeedRunStylus
 
-![SRE Thumbnail](./packages/nextjs/public/thumbnail.png)
+![SRE Thumbnail](./packages/nextjs/public/speedrun-logo-new.png)
 
-New version of [SpeedRunEthereum](https://github.com/BuidlGuidl/SpeedRunEthereum) built with [Scaffold-ETH 2](https://github.com/scaffold-eth/scaffold-eth-2). An expanded experience for builders where you'll be able to unlock your builder profile after completing a few challenges. This will open the gates to:
+Welcome to the **SpeedRunStylus** project, an enhanced platform for builders to engage with various challenges and unlock their builder profiles. This project is built with [Scaffold-ETH 2](https://github.com/scaffold-eth/scaffold-eth-2) and offers an expanded experience for developers.
 
-- Interact with other BuidlGuidl curriculums like [ETH Tech Tree](https://www.ethtechtree.com/) and [BuidlGuidl CTF](https://ctf.buidlguidl.com/)
-- Share your builds and discover what other builders are up to
-- Earn badges
-- Compete on the leaderboard with other builders
+## Features
 
-You can find the repository containing the challenges [here](https://github.com/scaffold-eth/se-2-challenges).
+- Interact with various BuidlGuidl curriculums.
+- Share your builds and discover what other builders are creating.
+- Earn badges for your achievements.
+- Compete on the leaderboard with other builders.
+
+You can find the repository containing the challenges [here](https://github.com/abhi152003/speedrun_stylus).
 
 ## Requirements
 
@@ -24,31 +26,31 @@ Before you begin, you need to install the following tools:
 
 1. Install dependencies
 
-```
-yarn install
-```
+   ```bash
+   yarn install
+   ```
 
-2. Spin up the Postgres database service + create database + seed
+2. Spin up the Postgres database service, create the database, and seed it
 
-```
-docker compose up -d
-yarn drizzle-kit migrate
-yarn db:seed
-```
+   ```bash
+   docker compose up -d
+   yarn drizzle-kit migrate
+   yarn db:seed
+   ```
 
 3. Start your NextJS app:
 
-```
-yarn start
-```
+   ```bash
+   yarn start
+   ```
 
-Visit your app on: `http://localhost:3000`.
+   Visit your app at: `http://localhost:3000`.
 
 4. You can explore the database with:
 
-```
-yarn drizzle-kit studio
-```
+   ```bash
+   yarn drizzle-kit studio
+   ```
 
 ### Database Information
 
@@ -62,10 +64,10 @@ For local development, we use a Docker-based Postgres instance.
 
 For production, we recommend using [Neon DB](https://neon.tech), a serverless Postgres service optimized for Next.js applications. To configure Neon DB:
 
-1. Sign up for a Neon account and create a project
-2. Get your connection string from the Neon dashboard
-3. Set the `POSTGRES_URL` environment variable with your Neon connection string
-4. Run migrations: `POSTGRES_URL=your-neon-connection-string yarn drizzle-kit migrate`
+1. Sign up for a Neon account and create a project.
+2. Get your connection string from the Neon dashboard.
+3. Set the `POSTGRES_URL` environment variable with your Neon connection string.
+4. Run migrations: `POSTGRES_URL=your-neon-connection-string yarn drizzle-kit migrate`.
 
 For detailed setup instructions, see [docs/NEON_DB_SETUP.md](docs/NEON_DB_SETUP.md).
 
@@ -73,13 +75,13 @@ For detailed setup instructions, see [docs/NEON_DB_SETUP.md](docs/NEON_DB_SETUP.
 
 Anytime we update the schema in `packages/nextjs/services/database/config/schema.ts`, we can generate a migration with:
 
-```
+```bash
 yarn drizzle-kit generate
 ```
 
 Then we can apply the migration with:
 
-```
+```bash
 yarn drizzle-kit migrate
 ```
 
@@ -87,8 +89,8 @@ We also need to make sure we commit the migration to the repo.
 
 ### Database (dev info)
 
-To iterate fast on the database locally:
+To iterate quickly on the database locally:
 
-- Tweak the schema in `schema.ts`
+- Tweak the schema in `schema.ts`.
 - Run `yarn drizzle-kit push` to apply the changes.
-- Copy `seed.data.example.ts` to `seed.data.ts`, tweak as needed and run `yarn db:seed` (will delete existing data)
+- Copy `seed.data.example.ts` to `seed.data.ts`, tweak as needed, and run `yarn db:seed` (this will delete existing data).
