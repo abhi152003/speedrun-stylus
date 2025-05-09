@@ -4,12 +4,12 @@ import type { Metadata } from "next";
 const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
   ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
   : `http://localhost:${process.env.PORT || 3000}`;
-const titleTemplate = "%s | Speed Run Ethereum";
+const titleTemplate = "%s | Speed Run Stylus";
 
 export const getMetadata = ({
   title,
   description,
-  imageRelativePath = "/thumbnail.png",
+  imageRelativePath = "/speedrun-logo-new.png",
 }: {
   title: string;
   description: string;

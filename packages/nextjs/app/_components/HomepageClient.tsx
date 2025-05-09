@@ -3,6 +3,7 @@
 import { ChallengeExpandedCard } from "./ChallengeExpandedCard";
 import { Hero } from "./Hero";
 import { JoinBGCard } from "./JoinBGCard";
+import TelegramButton from "./TelegramButton";
 import { useAccount } from "wagmi";
 import { useUser } from "~~/hooks/useUser";
 import { useUserChallenges } from "~~/hooks/useUserChallenges";
@@ -52,6 +53,10 @@ export const HomepageClient = ({ challenges }: { challenges: Challenges }) => {
         />
 
         <JoinBGCard userChallenges={userChallenges} user={user} />
+
+        <div className="flex justify-center py-8 bg-accent">
+          <TelegramButton channelLink="https://t.me/speedrun_stylus" />
+        </div>
 
         <ChallengeExpandedCard
           key={ChallengeId.ZKP_AGE}

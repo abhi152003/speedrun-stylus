@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import TelegramButton from "../../_components/TelegramButton";
 import { SubmitChallengeButton } from "./_components/SubmitChallengeButton";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypeRaw from "rehype-raw";
@@ -66,6 +67,10 @@ export default async function ChallengePage({ params }: { params: { challengeId:
         <div>Failed to load challenge content</div>
       )}
       <SubmitChallengeButton challengeId={challenge.id} />
+
+      <div className="fixed bottom-5 left-5">
+        <TelegramButton channelLink="https://t.me/speedrun_stylus" label="Need help? Join Telegram" />
+      </div>
     </div>
   );
 }
