@@ -1,6 +1,6 @@
 import Image from "next/image";
 import speedrunLogo from "../../../speedrun-logo-new.png";
-import speedrunWhiteLogo from "../../../speedrunWhiteBG_transparent.png";
+import speedrunWhiteLogo from "../../../speedrun-stylus-dark-mode.svg";
 import { useTheme } from "next-themes";
 
 const HeroLogo = ({ className = "" }: { className?: string }) => {

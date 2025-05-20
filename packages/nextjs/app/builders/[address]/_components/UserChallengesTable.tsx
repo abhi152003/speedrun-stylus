@@ -57,6 +57,22 @@ const ChallengeRow = ({ challenge, isOwnProfile }: { challenge: UserChallenges[n
     return null;
   });
 
+  const [startTime, setStartTime] = useState<number>(() => {
+    // Try to restore start time from localStorage
+    if (typeof window !== "undefined") {
+      const savedState = localStorage.getItem(`${STORAGE_PREFIX}${challenge.challengeId}`);
+      if (savedState) {
+        try {
+          const parsedState = JSON.parse(savedState);
+          return parsedState.startTime || new Date().getTime();
+        } catch (e) {
+          console.error("Error parsing saved start time:", e);
+        }
+      }
+    }
+    return new Date().getTime();
+  });
+
   const [, setReviewResult] = useState<{ success: boolean; message: string } | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [description, setDescription] = useState("");
@@ -69,8 +85,8 @@ const ChallengeRow = ({ challenge, isOwnProfile }: { challenge: UserChallenges[n
         try {
           const parsedState = JSON.parse(savedState);
           const now = new Date().getTime();
-          const startTime = parsedState.startTime || parsedState.timestamp;
-          return Math.floor((now - startTime) / 1000);
+          const startTimeValue = parsedState.startTime || parsedState.timestamp;
+          return Math.floor((now - startTimeValue) / 1000);
         } catch (e) {
           console.error("Error parsing saved elapsed time:", e);
         }
@@ -109,12 +125,12 @@ const ChallengeRow = ({ challenge, isOwnProfile }: { challenge: UserChallenges[n
         status: processingStatus,
         processingId,
         timestamp: new Date().getTime(),
-        startTime: new Date().getTime() - elapsedTime * 1000,
+        startTime: startTime,
         estimatedTimeRemaining,
       };
       localStorage.setItem(`${STORAGE_PREFIX}${challenge.challengeId}`, JSON.stringify(storageData));
     }
-  }, [processingStatus, processingId, elapsedTime, estimatedTimeRemaining, challenge.challengeId]);
+  }, [processingStatus, processingId, elapsedTime, estimatedTimeRemaining, challenge.challengeId, startTime]);
 
   // Clean up localStorage when processing is done
   useEffect(() => {
@@ -134,7 +150,9 @@ const ChallengeRow = ({ challenge, isOwnProfile }: { challenge: UserChallenges[n
 
     if (processingStatus === "processing") {
       interval = setInterval(() => {
-        setElapsedTime(prev => prev + 1);
+        const now = new Date().getTime();
+        const elapsed = Math.floor((now - startTime) / 1000);
+        setElapsedTime(elapsed);
       }, 1000);
     } else {
       if (interval) clearInterval(interval);
@@ -143,7 +161,7 @@ const ChallengeRow = ({ challenge, isOwnProfile }: { challenge: UserChallenges[n
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [processingStatus]);
+  }, [processingStatus, startTime]);
 
   // Status checking effect
   useEffect(() => {
@@ -281,12 +299,6 @@ const ChallengeRow = ({ challenge, isOwnProfile }: { challenge: UserChallenges[n
     }
   };
 
-  const formatTime = (seconds: number): string => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
-  };
-
   const handleSubmitForReview = async () => {
     if (!localChallengeData.githubRepoUrl || description.trim().length === 0) return;
 
@@ -359,6 +371,7 @@ const ChallengeRow = ({ challenge, isOwnProfile }: { challenge: UserChallenges[n
       const data = await response.json();
       setProcessingId(data.processing_id);
       setProcessingStatus("processing");
+      setStartTime(new Date().getTime());
 
       // Set initial estimated time
       if (data.estimatedTimeRemaining) {
@@ -383,9 +396,12 @@ const ChallengeRow = ({ challenge, isOwnProfile }: { challenge: UserChallenges[n
   // Calculate progress percentage for the progress bar
   const calculateProgress = () => {
     if (!estimatedTimeRemaining) return 0;
-    const totalTime = estimatedTimeRemaining;
-    const progress = Math.min(100, (elapsedTime / totalTime) * 100);
-    return progress;
+
+    // Calculate based on elapsed time and estimated time remaining
+    const totalEstimatedSeconds = elapsedTime + estimatedTimeRemaining;
+    const progressPercentage = Math.min(100, (elapsedTime / totalEstimatedSeconds) * 100);
+
+    return progressPercentage;
   };
 
   const renderScoreColumn = () => {
@@ -399,24 +415,41 @@ const ChallengeRow = ({ challenge, isOwnProfile }: { challenge: UserChallenges[n
 
     if (processingStatus === "processing") {
       return (
-        <div className="flex flex-col w-full items-center gap-1">
+        <div className="flex flex-col w-full items-center gap-1 group relative">
           <div className="w-32 bg-base-200 rounded-full h-2 overflow-hidden">
             <div
               className="bg-primary h-full rounded-full transition-all duration-300"
               style={{ width: `${calculateProgress()}%` }}
             ></div>
           </div>
-          <div className="text-xs font-medium text-base-content/80">
-            {formatTime(elapsedTime)} / ~{formatTime(estimatedTimeRemaining || 0)}
-          </div>
           <div className="text-xs text-base-content/60">Processing...</div>
+
+          <div className="invisible group-hover:visible absolute right-full mr-2 top-1/2 -translate-y-1/2 w-48 p-1 bg-base-100 dark:bg-base-300 shadow-md rounded-lg z-50 border border-base-300">
+            <div className="text-xs font-medium flex items-start gap-1">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                className="text-info w-4 h-4 mt-0.5 flex-shrink-0"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+              <span>Usually takes approximately 10 minutes to complete, but may vary based on network congestion.</span>
+            </div>
+          </div>
         </div>
       );
     }
 
     if (processingStatus === "completed") {
       return (
-        <div className="inline-flex items-center justify-center text-success font-medium rounded-lg px-3 py-1.5 text-sm">
+        <div className="inline-flex items-center justify-center text-success font-medium rounded-lg px-3 py-1.5 text-sm bg-base-200">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="mr-1 h-4 w-4"
