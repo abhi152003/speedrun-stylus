@@ -296,6 +296,48 @@ const ChallengeRow = ({ challenge, isOwnProfile }: { challenge: UserChallenges[n
     setIsModalOpen(false); // Close modal immediately
 
     try {
+      // Determine folders array based on challenge sort order
+      let folderArray: string[] = ["packages/nextjs/app/debug"];
+
+      switch (localChallengeData.challenge.sortOrder) {
+        case 0: // Counter
+          folderArray = ["packages/nextjs/app/debug", "packages/stylus-demo/src"];
+          break;
+        case 1: // NFT
+          folderArray = ["packages/nextjs/app/debug", "packages/cargo-stylus/nft/src"];
+          break;
+        case 2: // Vending Machine
+          folderArray = ["packages/nextjs/app/debug", "packages/cargo-stylus/vending_machine/src"];
+          break;
+        case 3: // Multisig Wallet
+          folderArray = ["packages/nextjs/app/debug", "packages/cargo-stylus/multi-sig/src"];
+          break;
+        case 4: // Uniswap V2
+          folderArray = ["packages/nextjs/app/debug", "packages/cargo-stylus/stylus-uniswap-v2/src"];
+          break;
+        case 5: // ZKP - Age Verifier
+          folderArray = ["packages/nextjs/app/ageVerifier", "packages/cargo-stylus/contracts"];
+          break;
+        case 6: // ZKP - Balance Checker
+          folderArray = ["packages/nextjs/app/balanceChecker", "packages/cargo-stylus/contracts"];
+          break;
+        case 7: // ZKP - Password Verifier
+          folderArray = ["packages/nextjs/app/passwordVerifier", "packages/cargo-stylus/contracts"];
+          break;
+        case 8: // ZKP - Location Verifier
+          folderArray = ["packages/nextjs/app/locationVerifier", "packages/cargo-stylus/contracts"];
+          break;
+        case 9: // ZKP - Model Verifier
+          folderArray = ["packages/nextjs/app/modelVerifier", "packages/cargo-stylus/contracts"];
+          break;
+        case 10: // ZKP - Anon Aadhaar
+          folderArray = ["packages/nextjs/app/anon-aadhaar", "packages/cargo-stylus/contracts"];
+          break;
+        default:
+          folderArray = ["packages/nextjs/app/debug"];
+          break;
+      }
+
       // Submit task for background processing
       const response = await fetch(`${API_BASE_URL}/begin-processing`, {
         method: "POST",
@@ -306,7 +348,7 @@ const ChallengeRow = ({ challenge, isOwnProfile }: { challenge: UserChallenges[n
           repo_url: localChallengeData.githubRepoUrl,
           description: description,
           challenge_name: localChallengeData.challenge.challengeName,
-          folders: ["packages/nextjs/app/debug"],
+          folders: folderArray,
         }),
       });
 
