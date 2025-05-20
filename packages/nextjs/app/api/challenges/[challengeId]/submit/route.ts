@@ -20,6 +20,10 @@ export type ChallengeSubmitPayload = {
   signature: `0x${string}`;
 };
 
+export async function GET() {
+  return NextResponse.json({ message: "This endpoint only accepts POST requests" }, { status: 405 });
+}
+
 export async function POST(req: NextRequest, { params }: { params: { challengeId: ChallengeId } }) {
   try {
     const challengeId = params.challengeId;

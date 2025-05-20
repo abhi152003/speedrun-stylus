@@ -100,6 +100,7 @@ export const userChallenges = pgTable(
     reviewAction: reviewActionEnum(),
     signature: varchar({ length: 255 }),
     githubUsername: varchar({ length: 255 }),
+    score: integer(), // Score from code review
   },
   table => [
     index("user_challenge_lookup_idx").on(table.userAddress),

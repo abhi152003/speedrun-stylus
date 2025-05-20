@@ -70,6 +70,7 @@ ChallengeStatusModal.displayName = "ChallengeStatusModal";
 type ChallengeStatusProps = {
   reviewAction: ReviewAction;
   comment?: string | null;
+  score?: number | null;
 };
 
 export const ChallengeStatus = ({ reviewAction, comment }: ChallengeStatusProps) => {
