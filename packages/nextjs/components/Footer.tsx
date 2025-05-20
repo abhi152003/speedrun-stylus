@@ -31,6 +31,33 @@ export const Footer = () => {
           <SwitchTheme className={`pointer-events-auto ${isLocalNetwork ? "self-end md:self-auto" : ""}`} />
         </div>
       </div>
+      <div className="w-full">
+        <ul className="menu menu-horizontal w-full">
+          <div className="flex justify-center items-center gap-2 text-base w-full">
+            <div className="text-center text-base text-base-content/70">
+              <span>Forked from </span>
+              <a
+                href="https://buidlguidl.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-primary transition-colors"
+              >
+                BuildGuidl
+              </a>
+              <span> | Funded by </span>
+              <a
+                href="https://www.tally.xyz/gov/arbitrum/proposal/47215139570733026393508270943324710379923699871435188004224569883226292800465"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-primary transition-colors"
+              >
+                Arbitrum DAO
+                <span> (D.A.O. Grant Program - Season 3)</span>
+              </a>
+            </div>
+          </div>
+        </ul>
+      </div>
     </div>
   );
 };
