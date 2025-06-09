@@ -1,4 +1,5 @@
 import { Space_Grotesk } from "next/font/google";
+import Script from "next/script";
 import "@rainbow-me/rainbowkit/styles.css";
 import PlausibleProvider from "next-plausible";
 import { ScaffoldEthAppWithProviders } from "~~/components/ScaffoldEthAppWithProviders";
@@ -23,6 +24,17 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
         <PlausibleProvider domain="speedrunstylus.com" />
       </head>
       <body>
+        {/* Google Analytics */}
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-X6K9227V5J" strategy="afterInteractive" />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-X6K9227V5J');
+          `}
+        </Script>
+
         <ThemeProvider enableSystem>
           <ScaffoldEthAppWithProviders>{children}</ScaffoldEthAppWithProviders>
         </ThemeProvider>
