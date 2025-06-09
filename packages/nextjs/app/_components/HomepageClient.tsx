@@ -4,6 +4,7 @@ import { ChallengeExpandedCard } from "./ChallengeExpandedCard";
 import { Hero } from "./Hero";
 import { JoinBGCard } from "./JoinBGCard";
 import TelegramButton from "./TelegramButton";
+import { WalletConnectionScreen } from "./WalletConnectionScreen";
 import { useAccount } from "wagmi";
 import { useUser } from "~~/hooks/useUser";
 import { useUserChallenges } from "~~/hooks/useUserChallenges";
@@ -17,6 +18,12 @@ export const HomepageClient = ({ challenges }: { challenges: Challenges }) => {
 
   const { data: userChallenges } = useUserChallenges(connectedAddress);
 
+  // Show wallet connection screen if no wallet is connected
+  if (!connectedAddress) {
+    return <WalletConnectionScreen />;
+  }
+
+  // Show regular homepage content when wallet is connected
   return (
     <div>
       <Hero firstChallengeId={"simple-counter-example"} />
