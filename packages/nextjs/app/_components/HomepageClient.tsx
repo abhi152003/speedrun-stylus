@@ -1,5 +1,6 @@
 "use client";
 
+import { BlurredChallengeCard } from "./BlurredChallengeCard";
 import { ChallengeExpandedCard } from "./ChallengeExpandedCard";
 import { Hero } from "./Hero";
 import { JoinBGCard } from "./JoinBGCard";
@@ -17,7 +18,25 @@ export const HomepageClient = ({ challenges }: { challenges: Challenges }) => {
 
   const { data: userChallenges } = useUserChallenges(connectedAddress);
 
-  // Show regular homepage content when wallet is connected
+  // If wallet is not connected, show first challenge and blurred second challenge
+  if (!connectedAddress) {
+    return (
+      <div>
+        <Hero firstChallengeId={"simple-counter-example"} />
+        <div className="bg-base-200">
+          <ChallengeExpandedCard
+            key={ChallengeId.SIMPLE_COUNTER_EXAMPLE}
+            challengeId={ChallengeId.SIMPLE_COUNTER_EXAMPLE}
+            userChallenges={userChallenges}
+            challenges={challenges}
+          />
+          <BlurredChallengeCard challengeId={ChallengeId.SIMPLE_NFT_EXAMPLE} challenges={challenges} />
+        </div>
+      </div>
+    );
+  }
+
+  // Show all challenges when wallet is connected
   return (
     <div>
       <Hero firstChallengeId={"simple-counter-example"} />

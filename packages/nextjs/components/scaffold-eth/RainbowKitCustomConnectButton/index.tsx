@@ -8,8 +8,8 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Address } from "viem";
 import { useAccount, useDisconnect } from "wagmi";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import RegisterUser from "~~/app/_components/RegisterUser";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
+import { useAutoRegister } from "~~/hooks/useAutoRegister";
 import { useUser } from "~~/hooks/useUser";
 import { getBlockExplorerAddressLink } from "~~/utils/scaffold-eth";
 
@@ -21,6 +21,7 @@ export const RainbowKitCustomConnectButton = () => {
   const { address: connectedAddress } = useAccount();
   const { data: user, isLoading: isLoadingUser } = useUser(connectedAddress);
   const { disconnect } = useDisconnect();
+  const { isAutoRegistering } = useAutoRegister();
 
   return (
     <ConnectButton.Custom>
@@ -53,7 +54,11 @@ export const RainbowKitCustomConnectButton = () => {
         if (!user) {
           return (
             <div className="flex items-baseline gap-4">
-              <RegisterUser />
+              {isAutoRegistering ? (
+                <span className="loading loading-spinner loading-sm"></span>
+              ) : (
+                <span className="text-sm">Registering...</span>
+              )}
               <button className="flex items-center rounded-full bg-base-300" onClick={() => disconnect()}>
                 <XMarkIcon className="w-6 h-6" />
               </button>

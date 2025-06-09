@@ -42,7 +42,7 @@ export const Footer = () => {
                 rel="noopener noreferrer"
                 className="hover:text-primary transition-colors"
               >
-                BuildGuidl
+                BuidlGuidl
               </a>
               <span> | Funded by </span>
               <a

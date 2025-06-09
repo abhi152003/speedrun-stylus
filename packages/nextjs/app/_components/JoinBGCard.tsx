@@ -1,8 +1,9 @@
 import Image from "next/image";
+import JoinBGButton from "./JoinBGButton";
 import { UserChallenges } from "~~/services/database/repositories/userChallenges";
 import { UserByAddress } from "~~/services/database/repositories/users";
 
-export const JoinBGCard = ({}: { userChallenges?: UserChallenges; user?: UserByAddress }) => {
+export const JoinBGCard = ({ userChallenges, user }: { userChallenges?: UserChallenges; user?: UserByAddress }) => {
   return (
     <div className="flex justify-center bg-[url(/assets/bgBanner_castlePlatform.svg)] bg-bottom bg-repeat-x bg-[length:150%_auto] lg:bg-auto relative overflow-hidden bg-accent">
       <Image
@@ -29,6 +30,9 @@ export const JoinBGCard = ({}: { userChallenges?: UserChallenges; user?: UserByA
             Web3. A space to showcase your Rust and Solidity creations, connect with fellow developers, and grow the
             ecosystem.
           </p>
+          <div className="flex justify-center lg:justify-end items-center">
+            <JoinBGButton user={user} userChallenges={userChallenges} />
+          </div>
         </div>
         <span className="absolute h-5 w-5 rounded-full bg-base-300 border-primary border-4 top-[22%] lg:top-[30%] -left-[11px] sm:-left-[13px]" />
 

@@ -35,6 +35,24 @@ export async function registerUser({ address, signature }: { address: string; si
   return data.user as UserByAddress;
 }
 
+export async function registerUserAutomatic({ address }: { address: string }) {
+  const response = await fetch("/api/users/register-automatic", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ address }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.error || "Automatic registration failed");
+  }
+
+  return data.user as UserByAddress;
+}
+
 export async function updateSocials(payload: UpdateSocialsPayload) {
   const response = await fetch("/api/users/update-socials", {
     method: "POST",
