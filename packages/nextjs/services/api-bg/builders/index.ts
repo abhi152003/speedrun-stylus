@@ -4,7 +4,7 @@ import { getUserSocials } from "~~/utils/socials";
 async function fetchBgMember(address: string | undefined) {
   if (!address) return;
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BG_BACKEND}/users/${address}`);
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BG_BACKEND}/builders/${address}`);
   if (response.status !== 200) {
     if (response.status === 404) {
       return;

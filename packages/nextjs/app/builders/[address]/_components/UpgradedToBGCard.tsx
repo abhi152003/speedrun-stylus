@@ -21,7 +21,7 @@ export const UpgradedToBGCard = ({ user }: { user: NonNullable<UserByAddress> })
         </h1>
 
         <Link
-          href={`https://app.buidlguidl.com/users/${user.userAddress}`}
+          href={`https://app.buidlguidl.com/builders/${user.userAddress}`}
           target="_blank"
           className="flex gap-2 items-center text-sm sm:text-lg px-4 py-1 border-2 border-primary rounded-full bg-base-300 dark:bg-primary dark:text-secondary dark:border-secondary cursor-pointer hover:bg-base-200 dark:hover:bg-accent transition-colors hover:underline"
         >

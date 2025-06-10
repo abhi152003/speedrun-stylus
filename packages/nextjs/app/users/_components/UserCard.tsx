@@ -88,7 +88,7 @@ export const UserCard = ({ user }: UserCardProps) => {
         </div>
 
         {/* Hover Effect Indicator */}
-        <Link href={`/users/${user.userAddress}`}>
+        <Link href={`/builders/${user.userAddress}`}>
           <div className="mt-4 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <span className="text-sm text-primary font-medium">View Profile →</span>
           </div>
