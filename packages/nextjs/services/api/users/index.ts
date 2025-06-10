@@ -121,3 +121,27 @@ export async function userJoinBg({ address, signature }: { address: string; sign
 
   return data.user as NonNullable<UserByAddress>;
 }
+
+export async function fetchOnboardedUsers({
+  page = 1,
+  limit = 20,
+  search = "",
+}: {
+  page?: number;
+  limit?: number;
+  search?: string;
+} = {}) {
+  const params = new URLSearchParams({
+    page: page.toString(),
+    limit: limit.toString(),
+    ...(search && { search }),
+  });
+
+  const response = await fetch(`/api/users/onboarded?${params}`);
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch onboarded users: ${response.status} ${response.statusText}`);
+  }
+
+  return response.json();
+}

@@ -8,7 +8,7 @@ import * as path from "path";
 dotenv.config({ path: path.resolve(__dirname, "../../../.env.development") });
 
 const BG_BATCHES_ENDPOINT = `${process.env.NEXT_PUBLIC_BG_BACKEND}/batches`;
-const BG_USERS_WITH_BATCHES_ENDPOINT = `${process.env.NEXT_PUBLIC_BG_BACKEND}/builders/batches`;
+const BG_USERS_WITH_BATCHES_ENDPOINT = `${process.env.NEXT_PUBLIC_BG_BACKEND}/users/batches`;
 
 type BgBatch = {
   id: string;

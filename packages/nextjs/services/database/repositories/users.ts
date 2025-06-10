@@ -1,8 +1,8 @@
 import { ReviewAction } from "../config/types";
 import { UserRole } from "../config/types";
 import { ColumnSort, SortingState } from "@tanstack/react-table";
-import { InferInsertModel } from "drizzle-orm";
-import { eq, sql } from "drizzle-orm";
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { and, desc, eq, ilike, inArray, isNotNull, isNull, or, sql } from "drizzle-orm";
 import { db } from "~~/services/database/config/postgresClient";
 import { lower, userChallenges, users } from "~~/services/database/config/schema";
 
@@ -11,15 +11,48 @@ type PickSocials<T> = {
 };
 
 export type UserInsert = InferInsertModel<typeof users>;
-export type UserByAddress = Awaited<ReturnType<typeof getUserByAddress>>;
+export type UserSelect = InferSelectModel<typeof users>;
+export type UserByAddress = UserSelect | null;
 export type UserSocials = PickSocials<NonNullable<UserByAddress>>;
 export type UserWithChallengesData = Awaited<ReturnType<typeof getSortedUsersWithChallengesInfo>>["data"][0];
 export type UserLocation = NonNullable<UserByAddress>["location"];
 
-export async function getUserByAddress(address: string) {
-  return await db.query.users.findFirst({
-    where: eq(lower(users.userAddress), address.toLowerCase()),
+export async function getGithubUsernameFromChallenges(userAddress: string): Promise<string | null> {
+  const userChallenge = await db.query.userChallenges.findFirst({
+    where: and(
+      eq(lower(userChallenges.userAddress), userAddress.toLowerCase()),
+      isNotNull(userChallenges.githubUsername),
+    ),
+    orderBy: [desc(userChallenges.submittedAt)],
+    columns: {
+      githubUsername: true,
+    },
   });
+
+  return userChallenge?.githubUsername || null;
+}
+
+export async function getUserByAddress(userAddress: string): Promise<UserSelect | null> {
+  const userFound = await db.query.users.findFirst({
+    where: eq(lower(users.userAddress), userAddress.toLowerCase()),
+  });
+
+  if (!userFound) {
+    return null;
+  }
+
+  // If socialGithub is not set, try to get it from user challenges
+  if (!userFound.socialGithub) {
+    const githubFromChallenges = await getGithubUsernameFromChallenges(userAddress);
+    if (githubFromChallenges) {
+      return {
+        ...userFound,
+        socialGithub: githubFromChallenges,
+      };
+    }
+  }
+
+  return userFound;
 }
 
 export async function getSortedUsersWithChallengesInfo(start: number, size: number, sorting: SortingState) {
@@ -139,4 +172,107 @@ export async function updateUserRoleToBuilder(userAddress: string) {
 export async function isUserAdmin(userAddress: string): Promise<boolean> {
   const user = await getUserByAddress(userAddress);
   return user?.role === UserRole.ADMIN;
+}
+
+export async function getAllUsers({
+  offset = 0,
+  limit = 20,
+  search = "",
+}: {
+  offset?: number;
+  limit?: number;
+  search?: string;
+}) {
+  let whereCondition;
+  let additionalUserAddresses: string[] = [];
+
+  if (search) {
+    // First, search in the users table
+    whereCondition = or(
+      ilike(users.userAddress, `%${search}%`),
+      ilike(users.socialGithub, `%${search}%`),
+      ilike(users.socialX, `%${search}%`),
+      ilike(users.location, `%${search}%`),
+    );
+
+    // Also search for GitHub usernames in user challenges
+    const challengesWithGithub = await db.query.userChallenges.findMany({
+      where: ilike(userChallenges.githubUsername, `%${search}%`),
+      columns: {
+        userAddress: true,
+      },
+    });
+
+    additionalUserAddresses = challengesWithGithub.map(c => c.userAddress);
+  }
+
+  // If we have additional user addresses from challenge search, include them
+  if (additionalUserAddresses.length > 0) {
+    const challengeBasedCondition = inArray(users.userAddress, additionalUserAddresses);
+    whereCondition = whereCondition ? or(whereCondition, challengeBasedCondition) : challengeBasedCondition;
+  }
+
+  const [usersData, totalCount] = await Promise.all([
+    db.query.users.findMany({
+      where: whereCondition,
+      limit,
+      offset,
+      orderBy: desc(users.createdAt),
+    }),
+    db.$count(users, whereCondition),
+  ]);
+
+  // Enhance users data with GitHub usernames from challenges if not set
+  const enhancedUsersData = await Promise.all(
+    usersData.map(async user => {
+      if (!user.socialGithub) {
+        const githubFromChallenges = await getGithubUsernameFromChallenges(user.userAddress);
+        if (githubFromChallenges) {
+          return {
+            ...user,
+            socialGithub: githubFromChallenges,
+          };
+        }
+      }
+      return user;
+    }),
+  );
+
+  return {
+    users: enhancedUsersData,
+    totalCount,
+  };
+}
+
+export async function backfillGithubUsernames(): Promise<{ updated: number; errors: number }> {
+  let updated = 0;
+  let errors = 0;
+
+  try {
+    // Get all users who don't have socialGithub set
+    const usersWithoutGithub = await db.query.users.findMany({
+      where: isNull(users.socialGithub),
+      columns: {
+        userAddress: true,
+      },
+    });
+
+    for (const user of usersWithoutGithub) {
+      try {
+        const githubUsername = await getGithubUsernameFromChallenges(user.userAddress);
+        if (githubUsername) {
+          await updateUserSocials(user.userAddress, { socialGithub: githubUsername });
+          updated++;
+        }
+      } catch (error) {
+        console.error(`Failed to update GitHub for user ${user.userAddress}:`, error);
+        errors++;
+      }
+    }
+
+    return { updated, errors };
+  } catch (error) {
+    console.error("Error in backfillGithubUsernames:", error);
+    throw error;
+  }
 }

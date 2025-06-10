@@ -27,6 +27,10 @@ export const HeaderMenuLinks = ({ hideItemsByLabel, user }: { hideItemsByLabel?:
         href: "/",
       },
       {
+        label: "Builders",
+        href: "/builders",
+      },
+      {
         label: "Leaderboard",
         href: "/leaderboard",
       },
@@ -35,12 +39,12 @@ export const HeaderMenuLinks = ({ hideItemsByLabel, user }: { hideItemsByLabel?:
     const userMenuLinks: HeaderMenuLink[] = [
       {
         label: "Portfolio",
-        href: user ? `/builders/${user.userAddress}` : "/",
+        href: user ? `/users/${user.userAddress}` : "/",
         availableForRoles: [UserRole.USER, UserRole.BUILDER, UserRole.ADMIN],
       },
       {
         label: "Builders",
-        href: "/builders",
+        href: "/users",
         availableForRoles: [UserRole.BUILDER, UserRole.ADMIN],
       },
       {

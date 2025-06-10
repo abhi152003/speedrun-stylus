@@ -65,7 +65,7 @@ export const AddressInfoDropdown = ({
         >
           <NetworkOptions hidden={!selectingNetwork} />
           <li>
-            <Link href={`/builders/${address}`} className="btn-sm !rounded-xl flex gap-3 py-3" onClick={closeDropdown}>
+            <Link href={`/users/${address}`} className="btn-sm !rounded-xl flex gap-3 py-3" onClick={closeDropdown}>
               <UserIcon className="h-6 w-4" />
               <span className="whitespace-nowrap">My Portfolio</span>
             </Link>

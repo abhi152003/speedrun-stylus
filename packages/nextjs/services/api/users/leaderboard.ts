@@ -2,6 +2,7 @@ import { countDistinct, desc, eq, inArray } from "drizzle-orm";
 import { db } from "~~/services/database/config/postgresClient";
 import { userChallenges, users } from "~~/services/database/config/schema";
 import { ReviewAction } from "~~/services/database/config/types";
+import { getGithubUsernameFromChallenges } from "~~/services/database/repositories/users";
 
 export async function getLeaderboard() {
   try {
@@ -21,28 +22,22 @@ export async function getLeaderboard() {
       .groupBy(users.userAddress)
       .orderBy(desc(countDistinct(userChallenges.challengeId)));
 
-    // Fetch GitHub usernames from challenges separately
-    const githubData = await db
-      .select({
-        userAddress: userChallenges.userAddress,
-        githubUsername: userChallenges.githubUsername,
-      })
-      .from(userChallenges)
-      .where(inArray(userChallenges.reviewAction, [ReviewAction.ACCEPTED]))
-      .groupBy(userChallenges.userAddress, userChallenges.githubUsername);
+    // Process data to add GitHub username from challenges if not set in user profile
+    const processedData = await Promise.all(
+      leaderboardData.map(async entry => {
+        let githubUsername = entry.socialGithub;
 
-    // Process data to prioritize GitHub username from challenges if available
-    const processedData = leaderboardData.map(entry => {
-      let githubUsername = entry.socialGithub;
-      const userGithubData = githubData.find(g => g.userAddress === entry.userAddress && g.githubUsername);
-      if (userGithubData && userGithubData.githubUsername) {
-        githubUsername = userGithubData.githubUsername;
-      }
-      return {
-        ...entry,
-        socialGithub: githubUsername,
-      };
-    });
+        // If no GitHub username in user profile, try to get it from challenges
+        if (!githubUsername) {
+          githubUsername = await getGithubUsernameFromChallenges(entry.userAddress);
+        }
+
+        return {
+          ...entry,
+          socialGithub: githubUsername,
+        };
+      }),
+    );
 
     return processedData;
   } catch (error) {

@@ -5,7 +5,7 @@ import { submitToAutograder } from "~~/services/autograder";
 import { ChallengeId, ReviewAction } from "~~/services/database/config/types";
 import { getChallengeById } from "~~/services/database/repositories/challenges";
 import { createUserChallenge, updateUserChallengeById } from "~~/services/database/repositories/userChallenges";
-import { getUserByAddress } from "~~/services/database/repositories/users";
+import { getUserByAddress, updateUserSocials } from "~~/services/database/repositories/users";
 import { isValidEIP712ChallengeSubmitSignature } from "~~/services/eip712/challenge";
 import { PlausibleEvent, trackPlausibleEvent } from "~~/services/plausible";
 import { getRepoOwnerFromUrl } from "~~/utils/github";
@@ -75,6 +75,16 @@ export async function POST(req: NextRequest, { params }: { params: { challengeId
     const challenge = await getChallengeById(challengeId);
     if (!challenge || challenge.disabled) {
       return NextResponse.json({ error: "Challenge not found" }, { status: 404 });
+    }
+
+    // Update user's social_github if it's not already set
+    if (!user.socialGithub) {
+      try {
+        await updateUserSocials(userAddress, { socialGithub: githubUsername });
+      } catch (error) {
+        console.error("Failed to update user's GitHub social:", error);
+        // Don't fail the submission if social update fails
+      }
     }
 
     const submissionResult = await createUserChallenge({

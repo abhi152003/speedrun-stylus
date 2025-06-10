@@ -161,7 +161,7 @@ export const LeaderboardTable = () => {
             <tr key={entry.userAddress} className="hover:bg-base-200 transition-colors duration-200">
               <td className="text-center">{renderRankCell(entry.rank)}</td>
               <td>
-                <Link href={`/builders/${entry.userAddress}`} className="link link-hover link-primary">
+                <Link href={`/users/${entry.userAddress}`} className="link link-hover link-primary">
                   {entry.displayName}
                 </Link>
               </td>
