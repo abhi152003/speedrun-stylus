@@ -73,7 +73,7 @@ export const useSubmitChallenge = ({ onSuccess }: { onSuccess?: () => void }) =>
     },
     onSuccess: () => {
       notification.success("Challenge submitted successfully!");
-      router.push(`/users/${address}`);
+      router.push(`/builders/${address}`);
       router.refresh();
       onSuccess?.();
     },

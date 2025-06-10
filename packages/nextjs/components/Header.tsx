@@ -39,7 +39,7 @@ export const HeaderMenuLinks = ({ hideItemsByLabel, user }: { hideItemsByLabel?:
     const userMenuLinks: HeaderMenuLink[] = [
       {
         label: "Portfolio",
-        href: user ? `/users/${user.userAddress}` : "/",
+        href: user ? `/builders/${user.userAddress}` : "/",
         availableForRoles: [UserRole.USER, UserRole.BUILDER, UserRole.ADMIN],
       },
       {

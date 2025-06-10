@@ -7,5 +7,5 @@ type AddressLinkWrapperProps = {
 };
 
 export const AddressLinkWrapper = ({ children, disableAddressLink, address }: AddressLinkWrapperProps) => {
-  return disableAddressLink ? <>{children}</> : <Link href={`/users/${address}`}>{children}</Link>;
+  return disableAddressLink ? <>{children}</> : <Link href={`/builders/${address}`}>{children}</Link>;
 };
