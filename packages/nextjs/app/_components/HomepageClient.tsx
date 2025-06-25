@@ -18,102 +18,73 @@ export const HomepageClient = ({ challenges }: { challenges: Challenges }) => {
 
   const { data: userChallenges } = useUserChallenges(connectedAddress);
 
+  // Sort challenges by sortOrder and filter out disabled ones
+  const enabledChallenges = challenges
+    .filter(challenge => !challenge.disabled)
+    .sort((a, b) => a.sortOrder - b.sortOrder);
+
+  // Find specific challenges for the disconnected wallet view
+  const firstChallenge = enabledChallenges.find(c => c.id === ChallengeId.SIMPLE_COUNTER_EXAMPLE);
+  const secondChallenge = enabledChallenges.find(c => c.id === ChallengeId.SIMPLE_NFT_EXAMPLE);
+
   // If wallet is not connected, show first challenge and blurred second challenge
   if (!connectedAddress) {
     return (
       <div>
         <Hero firstChallengeId={"simple-counter-example"} />
         <div className="bg-base-200">
-          <ChallengeExpandedCard
-            key={ChallengeId.SIMPLE_COUNTER_EXAMPLE}
-            challengeId={ChallengeId.SIMPLE_COUNTER_EXAMPLE}
-            userChallenges={userChallenges}
-            challenges={challenges}
-          />
-          <BlurredChallengeCard challengeId={ChallengeId.SIMPLE_NFT_EXAMPLE} challenges={challenges} />
+          {firstChallenge && (
+            <ChallengeExpandedCard
+              key={firstChallenge.id}
+              challengeId={firstChallenge.id as ChallengeId}
+              userChallenges={userChallenges}
+              challenges={challenges}
+            />
+          )}
+          {secondChallenge && (
+            <BlurredChallengeCard challengeId={secondChallenge.id as ChallengeId} challenges={challenges} />
+          )}
         </div>
       </div>
     );
   }
+
+  // Group challenges: main challenges (0-4), then join BG, then advanced challenges (5+)
+  const mainChallenges = enabledChallenges.filter(c => c.sortOrder >= 0 && c.sortOrder <= 4);
+  const advancedChallenges = enabledChallenges.filter(c => c.sortOrder >= 6);
 
   // Show all challenges when wallet is connected
   return (
     <div>
       <Hero firstChallengeId={"simple-counter-example"} />
       <div className="bg-base-200">
-        <ChallengeExpandedCard
-          key={ChallengeId.SIMPLE_COUNTER_EXAMPLE}
-          challengeId={ChallengeId.SIMPLE_COUNTER_EXAMPLE}
-          userChallenges={userChallenges}
-          challenges={challenges}
-        />
-        <ChallengeExpandedCard
-          key={ChallengeId.SIMPLE_NFT_EXAMPLE}
-          challengeId={ChallengeId.SIMPLE_NFT_EXAMPLE}
-          userChallenges={userChallenges}
-          challenges={challenges}
-        />
-        <ChallengeExpandedCard
-          key={ChallengeId.VENDING_MACHINE}
-          challengeId={ChallengeId.VENDING_MACHINE}
-          userChallenges={userChallenges}
-          challenges={challenges}
-        />
-        <ChallengeExpandedCard
-          key={ChallengeId.MULTISIG_WALLET}
-          challengeId={ChallengeId.MULTISIG_WALLET}
-          userChallenges={userChallenges}
-          challenges={challenges}
-        />
-        <ChallengeExpandedCard
-          key={ChallengeId.UNISWAP_V2_STYLUS}
-          challengeId={ChallengeId.UNISWAP_V2_STYLUS}
-          userChallenges={userChallenges}
-          challenges={challenges}
-        />
+        {/* Main challenges (0-4) */}
+        {mainChallenges.map(challenge => (
+          <ChallengeExpandedCard
+            key={challenge.id}
+            challengeId={challenge.id as ChallengeId}
+            userChallenges={userChallenges}
+            challenges={challenges}
+          />
+        ))}
 
+        {/* Join BG Card (sort order 5) */}
         <JoinBGCard userChallenges={userChallenges} user={user} />
 
+        {/* Telegram Button */}
         <div className="flex justify-center py-8 bg-accent">
           <TelegramButton channelLink="https://t.me/speedrun_stylus" />
         </div>
 
-        <ChallengeExpandedCard
-          key={ChallengeId.ZKP_AGE}
-          challengeId={ChallengeId.ZKP_AGE}
-          userChallenges={userChallenges}
-          challenges={challenges}
-        />
-        <ChallengeExpandedCard
-          key={ChallengeId.ZKP_BALANCE}
-          challengeId={ChallengeId.ZKP_BALANCE}
-          userChallenges={userChallenges}
-          challenges={challenges}
-        />
-        <ChallengeExpandedCard
-          key={ChallengeId.ZKP_PASSWORD}
-          challengeId={ChallengeId.ZKP_PASSWORD}
-          userChallenges={userChallenges}
-          challenges={challenges}
-        />
-        <ChallengeExpandedCard
-          key={ChallengeId.ZKP_LOCATION}
-          challengeId={ChallengeId.ZKP_LOCATION}
-          userChallenges={userChallenges}
-          challenges={challenges}
-        />
-        <ChallengeExpandedCard
-          key={ChallengeId.ZKP_MODEL}
-          challengeId={ChallengeId.ZKP_MODEL}
-          userChallenges={userChallenges}
-          challenges={challenges}
-        />
-        <ChallengeExpandedCard
-          key={ChallengeId.ZKP_PUBLIC_DOC_VERIFIER}
-          challengeId={ChallengeId.ZKP_PUBLIC_DOC_VERIFIER}
-          userChallenges={userChallenges}
-          challenges={challenges}
-        />
+        {/* Advanced challenges (6+) */}
+        {advancedChallenges.map(challenge => (
+          <ChallengeExpandedCard
+            key={challenge.id}
+            challengeId={challenge.id as ChallengeId}
+            userChallenges={userChallenges}
+            challenges={challenges}
+          />
+        ))}
       </div>
     </div>
   );
