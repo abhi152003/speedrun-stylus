@@ -73,7 +73,7 @@ export const HomepageClient = ({ challenges }: { challenges: Challenges }) => {
 
         {/* Telegram Button */}
         <div className="flex justify-center py-8 bg-accent">
-          <TelegramButton channelLink="https://t.me/speedrun_stylus" />
+          <TelegramButton channelLink="https://t.me/+G55xO-18czg5NDA1" />
         </div>
 
         {/* Advanced challenges (6+) */}

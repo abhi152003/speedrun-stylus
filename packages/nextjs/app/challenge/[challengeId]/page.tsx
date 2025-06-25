@@ -69,7 +69,7 @@ export default async function ChallengePage({ params }: { params: { challengeId:
       <SubmitChallengeButton challengeId={challenge.id} />
 
       <div className="fixed bottom-5 left-5">
-        <TelegramButton channelLink="https://t.me/speedrun_stylus" label="Need help? Join Telegram" />
+        <TelegramButton channelLink="https://t.me/+G55xO-18czg5NDA1" label="Need help? Join Telegram" />
       </div>
     </div>
   );
