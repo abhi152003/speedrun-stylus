@@ -11,8 +11,8 @@ import { fetchGithubReadme, parseGithubUrl } from "~~/services/github";
 
 // TODO. Metadata
 
-// 6 hours
-export const revalidate = 21600;
+// Reduced from 6 hours to 1 minute for faster content updates
+export const revalidate = 60;
 
 export async function generateStaticParams() {
   const challenges = await getAllChallenges();
