@@ -25,6 +25,8 @@ export enum ChallengeId {
   ZKP_MODEL = "zkp-model",
   ZKP_PUBLIC_DOC_VERIFIER = "zkp-public-doc-verifier",
   VIBEKIT_SETUP = "vibekit-setup",
+  VIBEKIT_BASIC_AGENTS = "vibekit-basic-agents",
+  VIBEKIT_ADVANCED_AGENTS = "vibekit-advanced-agents",
 }
 
 export enum BatchStatus {
