@@ -25,6 +25,11 @@ export async function getLatestSubmissionPerChallengeByUser(userAddress: string)
   return Array.from(latestChallenges.values());
 }
 
+export async function getTotalSubmissionsCount(): Promise<number> {
+  const totalCount = await db.$count(userChallenges);
+  return totalCount;
+}
+
 export async function createUserChallenge(challenge: UserChallengeInsert) {
   const result = await db.insert(userChallenges).values(challenge).returning();
   return result[0];

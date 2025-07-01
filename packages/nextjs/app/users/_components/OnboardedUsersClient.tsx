@@ -13,6 +13,7 @@ export const OnboardedUsersClient = () => {
   const {
     users,
     pagination,
+    stats,
     isLoading,
     error,
     currentPage,
@@ -54,7 +55,11 @@ export const OnboardedUsersClient = () => {
       </div>
 
       {/* Stats Section */}
-      <UsersStats totalUsers={pagination?.totalCount || 0} isLoading={isLoading} />
+      <UsersStats
+        totalUsers={stats?.totalUsers || pagination?.totalCount || 0}
+        totalSubmissions={stats?.totalSubmissions || 0}
+        isLoading={isLoading}
+      />
 
       {/* Search Section */}
       <div className="mb-8">

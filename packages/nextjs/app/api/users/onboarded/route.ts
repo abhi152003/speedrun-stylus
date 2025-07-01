@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getTotalSubmissionsCount } from "~~/services/database/repositories/userChallenges";
 import { getAllUsers } from "~~/services/database/repositories/users";
 
 export async function GET(request: NextRequest) {
@@ -10,11 +11,14 @@ export async function GET(request: NextRequest) {
 
     const offset = (page - 1) * limit;
 
-    const { users, totalCount } = await getAllUsers({
-      offset,
-      limit,
-      search,
-    });
+    const [{ users, totalCount }, totalSubmissions] = await Promise.all([
+      getAllUsers({
+        offset,
+        limit,
+        search,
+      }),
+      getTotalSubmissionsCount(),
+    ]);
 
     return NextResponse.json({
       users,
@@ -25,6 +29,10 @@ export async function GET(request: NextRequest) {
         totalPages: Math.ceil(totalCount / limit),
         hasNext: offset + limit < totalCount,
         hasPrev: page > 1,
+      },
+      stats: {
+        totalUsers: totalCount,
+        totalSubmissions,
       },
     });
   } catch (error) {

@@ -1,11 +1,11 @@
 # Setting Up Neon DB for Production
 
-This guide will walk you through the process of setting up Neon DB as your production database for SpeedRunEthereum.
+This guide will walk you through the process of setting up Neon DB as your production database for SpeedRunStylus.
 
 ## Prerequisites
 
 - A Neon account (sign up at [neon.tech](https://neon.tech))
-- Your SpeedRunEthereum project ready for deployment
+- Your SpeedRunStylus project ready for deployment
 
 ## Steps to Configure Neon DB
 
@@ -13,7 +13,7 @@ This guide will walk you through the process of setting up Neon DB as your produ
 
 1. Sign up or log in to [Neon](https://neon.tech)
 2. Create a new project
-3. Choose a name for your project (e.g., `speedrun-ethereum`)
+3. Choose a name for your project (e.g., `speedrun-stylus`)
 4. Select a region closest to your users
 5. Click "Create Project"
 

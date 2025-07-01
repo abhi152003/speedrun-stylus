@@ -143,5 +143,10 @@ export async function fetchOnboardedUsers({
     throw new Error(`Failed to fetch onboarded users: ${response.status} ${response.statusText}`);
   }
 
-  return response.json();
+  const data = await response.json();
+  return {
+    users: data.users,
+    pagination: data.pagination,
+    stats: data.stats,
+  };
 }

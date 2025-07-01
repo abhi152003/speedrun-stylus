@@ -2,12 +2,12 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { FaGithub, FaMedal, FaSortDown, FaSortUp } from "react-icons/fa";
+import { FaGithub, FaMedal, FaSort, FaSortDown, FaSortUp } from "react-icons/fa";
 import { useLeaderboard } from "~~/hooks/useLeaderboard";
 import { BatchUserStatus } from "~~/services/database/config/types";
 import { formatAddress } from "~~/utils/formatAddress";
 
-type SortField = "rank" | "displayName" | "challengeCount" | "batchStatus" | "github";
+type SortField = "rank" | "displayName" | "challengeCount" | "score" | "batchStatus" | "github";
 type SortDirection = "asc" | "desc";
 
 export const LeaderboardTable = () => {
@@ -32,6 +32,7 @@ export const LeaderboardTable = () => {
       rank: index + 1,
       displayName: entry.socialX || entry.socialGithub || formatAddress(entry.userAddress),
       github: entry.socialGithub,
+      score: "Coming soon", // Placeholder for score
     }));
 
     return [...data].sort((a, b) => {
@@ -46,6 +47,10 @@ export const LeaderboardTable = () => {
           break;
         case "challengeCount":
           comparison = a.challengeCount - b.challengeCount;
+          break;
+        case "score":
+          // For now, all scores are the same, so no sorting change
+          comparison = 0;
           break;
         case "batchStatus":
           const statusOrder: Record<string, number> = {
@@ -102,9 +107,17 @@ export const LeaderboardTable = () => {
   };
 
   const SortIcon = ({ field }: { field: SortField }) => {
-    if (sortField !== field) return null;
+    if (sortField === field) {
+      return (
+        <span className="inline-block ml-1 text-white">{sortDirection === "asc" ? <FaSortUp /> : <FaSortDown />}</span>
+      );
+    }
 
-    return <span className="inline-block ml-1">{sortDirection === "asc" ? <FaSortUp /> : <FaSortDown />}</span>;
+    return (
+      <span className="inline-block ml-1 text-white/50 group-hover:text-white/80 transition-colors duration-200">
+        <FaSort />
+      </span>
+    );
   };
 
   if (isLoading) {
@@ -125,31 +138,37 @@ export const LeaderboardTable = () => {
         <thead>
           <tr className="bg-base-200">
             <th
-              className="text-center cursor-pointer hover:bg-base-300 transition-colors duration-200"
+              className="text-center cursor-pointer hover:bg-base-300 transition-colors duration-200 group"
               onClick={() => handleSort("rank")}
             >
               Rank <SortIcon field="rank" />
             </th>
             <th
-              className="cursor-pointer hover:bg-base-300 transition-colors duration-200"
+              className="cursor-pointer hover:bg-base-300 transition-colors duration-200 group"
               onClick={() => handleSort("displayName")}
             >
               Builder <SortIcon field="displayName" />
             </th>
             <th
-              className="text-center cursor-pointer hover:bg-base-300 transition-colors duration-200"
+              className="text-center cursor-pointer hover:bg-base-300 transition-colors duration-200 group"
               onClick={() => handleSort("challengeCount")}
             >
               Challenges Completed <SortIcon field="challengeCount" />
             </th>
             <th
-              className="text-center cursor-pointer hover:bg-base-300 transition-colors duration-200"
+              className="text-center cursor-pointer hover:bg-base-300 transition-colors duration-200 group"
+              onClick={() => handleSort("score")}
+            >
+              Score <SortIcon field="score" />
+            </th>
+            <th
+              className="text-center cursor-pointer hover:bg-base-300 transition-colors duration-200 group"
               onClick={() => handleSort("batchStatus")}
             >
               Status <SortIcon field="batchStatus" />
             </th>
             <th
-              className="text-center cursor-pointer hover:bg-base-300 transition-colors duration-200"
+              className="text-center cursor-pointer hover:bg-base-300 transition-colors duration-200 group"
               onClick={() => handleSort("github")}
             >
               GitHub <SortIcon field="github" />
@@ -166,6 +185,7 @@ export const LeaderboardTable = () => {
                 </Link>
               </td>
               <td className="text-center font-medium">{entry.challengeCount}</td>
+              <td className="text-center text-base-content/60 italic">{entry.score}</td>
               <td className="text-center">
                 {entry.batchStatus === BatchUserStatus.GRADUATE && <div className="badge badge-success">Graduate</div>}
                 {entry.batchStatus === BatchUserStatus.CANDIDATE && <div className="badge badge-info">Candidate</div>}
@@ -192,7 +212,7 @@ export const LeaderboardTable = () => {
           ))}
           {formattedData.length === 0 && (
             <tr>
-              <td colSpan={5} className="text-center py-8">
+              <td colSpan={6} className="text-center py-8">
                 No data available
               </td>
             </tr>

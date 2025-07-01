@@ -21,6 +21,7 @@ export function useOnboardedUsers() {
   return {
     users: data?.users || [],
     pagination: data?.pagination,
+    stats: data?.stats,
     isLoading,
     error,
     currentPage,

@@ -83,7 +83,6 @@ export const HomepageClient = ({ challenges }: { challenges: Challenges }) => {
             challengeId={challenge.id as ChallengeId}
             userChallenges={userChallenges}
             challenges={challenges}
-            comingSoon={challenge.id === ChallengeId.VIBEKIT_ADVANCED_AGENTS}
           />
         ))}
       </div>

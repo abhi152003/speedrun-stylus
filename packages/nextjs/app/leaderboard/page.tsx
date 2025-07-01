@@ -2,8 +2,8 @@ import { LeaderboardTable } from "./_components/LeaderboardTable";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "SpeedRunEthereum - Leaderboard",
-  description: "View the top builders ranked by completed challenges on SpeedRunEthereum",
+  title: "SpeedRunStylus - Leaderboard",
+  description: "View the top builders ranked by completed challenges on SpeedRunStylus",
 };
 
 export default function LeaderboardPage() {
