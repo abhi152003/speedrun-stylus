@@ -51,7 +51,7 @@ export const HomepageClient = ({ challenges }: { challenges: Challenges }) => {
 
   // Group challenges: main challenges (0-4), then join BG, then advanced challenges (5+)
   const mainChallenges = enabledChallenges.filter(c => c.sortOrder >= 0 && c.sortOrder <= 4);
-  const advancedChallenges = enabledChallenges.filter(c => c.sortOrder >= 6);
+  const advancedChallenges = enabledChallenges.filter(c => c.sortOrder >= 5 && c.sortOrder <= 20);
 
   // Show all challenges when wallet is connected
   return (
