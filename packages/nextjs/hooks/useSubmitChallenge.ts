@@ -31,7 +31,9 @@ const validateUrls = (params: SubmitChallengeParams) => {
     // Validate the GitHub URL format (should be github.com/username/repo)
     const pathParts = github.pathname.split("/").filter(Boolean);
     if (pathParts.length < 2) {
-      throw new Error("Invalid GitHub repository format. Expected: https://github.com/username/repository");
+      throw new Error(
+        "Invalid GitHub repository format. Expected: https://github.com/username/repository or https://github.com/username/repository.git",
+      );
     }
 
     return true;

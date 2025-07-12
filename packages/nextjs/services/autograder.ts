@@ -22,7 +22,14 @@ export async function submitToAutograder({
   }
 
   const owner = path[0];
-  const repo = path[1];
+  let repo = path[1];
+  repo = repo.replace(/\.git$/, "");
+  if (!repo) {
+    return {
+      success: false,
+      feedback: "Invalid GitHub repository URL format (empty repo name)",
+    };
+  }
 
   try {
     const verifyResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
