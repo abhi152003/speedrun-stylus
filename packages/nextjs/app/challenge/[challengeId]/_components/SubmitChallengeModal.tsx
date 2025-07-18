@@ -13,6 +13,9 @@ export const SubmitChallengeModal = forwardRef<HTMLDialogElement, SubmitChalleng
   ({ closeModal, challengeId }, ref) => {
     const [frontendUrl, setFrontendUrl] = useState("");
     const [githubRepoUrl, setGithubRepoUrl] = useState("");
+    const [deployedContractAddress, setDeployedContractAddress] = useState("");
+    const [timeDifference, setTimeDifference] = useState("");
+    const [gasDifference, setGasDifference] = useState("");
 
     const { submitChallenge, isPending } = useSubmitChallenge({
       onSuccess: closeModal,
@@ -61,11 +64,57 @@ export const SubmitChallengeModal = forwardRef<HTMLDialogElement, SubmitChalleng
               />
             </div>
 
+            <div className="flex flex-col gap-1.5 w-full">
+              <div className="flex items-base ml-2">
+                <span className="text-sm font-medium mr-2 leading-none">Deployed Contract Address (Optional)</span>
+                <div className="tooltip" data-tip="Your deployed contract address on Arbitrum Sepolia">
+                  <QuestionMarkCircleIcon className="h-4 w-4" />
+                </div>
+              </div>
+              <InputBase
+                placeholder="0x..."
+                value={deployedContractAddress}
+                onChange={e => setDeployedContractAddress(e)}
+              />
+            </div>
+
+            <div className="flex flex-col gap-1.5 w-full">
+              <div className="flex items-base ml-2">
+                <span className="text-sm font-medium mr-2 leading-none">Performance Improvement (Optional)</span>
+                <div
+                  className="tooltip"
+                  data-tip="Performance improvement percentage you got after running the provided script - latency saving after caching the contract"
+                >
+                  <QuestionMarkCircleIcon className="h-4 w-4" />
+                </div>
+              </div>
+              <InputBase placeholder="e.g., 25%" value={timeDifference} onChange={e => setTimeDifference(e)} />
+            </div>
+
+            <div className="flex flex-col gap-1.5 w-full">
+              <div className="flex items-base ml-2">
+                <span className="text-sm font-medium mr-2 leading-none">Gas Savings (Optional)</span>
+                <div className="tooltip" data-tip="Gas saving you achieved after caching the contract">
+                  <QuestionMarkCircleIcon className="h-4 w-4" />
+                </div>
+              </div>
+              <InputBase placeholder="e.g., 50000 gas" value={gasDifference} onChange={e => setGasDifference(e)} />
+            </div>
+
             <div className="modal-action">
               <button
                 className="btn btn-primary self-center"
                 disabled={!githubRepoUrl || isPending}
-                onClick={() => submitChallenge({ challengeId, frontendUrl, githubRepoUrl })}
+                onClick={() =>
+                  submitChallenge({
+                    challengeId,
+                    frontendUrl,
+                    githubRepoUrl,
+                    deployedContractAddress,
+                    timeDifference,
+                    gasDifference,
+                  })
+                }
               >
                 {isPending ? (
                   <>

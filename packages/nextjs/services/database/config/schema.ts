@@ -95,6 +95,9 @@ export const userChallenges = pgTable(
     frontendUrl: varchar({ length: 255 }),
     contractUrl: varchar({ length: 255 }),
     githubRepoUrl: varchar({ length: 255 }),
+    deployedContractAddress: varchar({ length: 255 }), // Contract address deployed on Arbitrum Sepolia
+    timeDifference: varchar({ length: 255 }), // Time difference/latency saving after caching
+    gasDifference: varchar({ length: 255 }), // Gas difference/saving after caching
     reviewComment: text(), // Feedback provided during autograding
     submittedAt: timestamp().notNull().defaultNow(),
     reviewAction: reviewActionEnum(),

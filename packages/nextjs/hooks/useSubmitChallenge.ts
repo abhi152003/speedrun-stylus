@@ -9,6 +9,9 @@ type SubmitChallengeParams = {
   challengeId: string;
   frontendUrl?: string;
   githubRepoUrl: string;
+  deployedContractAddress?: string;
+  timeDifference?: string;
+  gasDifference?: string;
 };
 
 const VALID_GITHUB_HOSTS = ["github.com"];
@@ -58,6 +61,9 @@ export const useSubmitChallenge = ({ onSuccess }: { onSuccess?: () => void }) =>
         challengeId: submitChallengeParams.challengeId,
         frontendUrl: submitChallengeParams.frontendUrl || "",
         githubRepoUrl: submitChallengeParams.githubRepoUrl,
+        deployedContractAddress: submitChallengeParams.deployedContractAddress || "",
+        timeDifference: submitChallengeParams.timeDifference || "",
+        gasDifference: submitChallengeParams.gasDifference || "",
       };
 
       const signature = await signTypedDataAsync({
@@ -71,6 +77,11 @@ export const useSubmitChallenge = ({ onSuccess }: { onSuccess?: () => void }) =>
         challengeId: submitChallengeParams.challengeId,
         githubRepoUrl: submitChallengeParams.githubRepoUrl,
         ...(submitChallengeParams.frontendUrl && { frontendUrl: submitChallengeParams.frontendUrl }),
+        ...(submitChallengeParams.deployedContractAddress && {
+          deployedContractAddress: submitChallengeParams.deployedContractAddress,
+        }),
+        ...(submitChallengeParams.timeDifference && { timeDifference: submitChallengeParams.timeDifference }),
+        ...(submitChallengeParams.gasDifference && { gasDifference: submitChallengeParams.gasDifference }),
       });
     },
     onSuccess: () => {

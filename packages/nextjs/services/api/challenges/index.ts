@@ -5,6 +5,9 @@ export const submitChallenge = async ({
   userAddress,
   frontendUrl,
   githubRepoUrl,
+  deployedContractAddress,
+  timeDifference,
+  gasDifference,
   signature,
 }: ChallengeSubmitPayload & { challengeId: string }) => {
   const response = await fetch(`/api/challenges/${challengeId}/submit`, {
@@ -16,6 +19,9 @@ export const submitChallenge = async ({
       userAddress,
       frontendUrl,
       githubRepoUrl,
+      deployedContractAddress,
+      timeDifference,
+      gasDifference,
       signature,
     }),
   });

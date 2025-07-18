@@ -43,6 +43,20 @@
       "when": 1745664050033,
       "tag": "0005_cooing_starhawk",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1752836276886,
+      "tag": "0006_motionless_praxagora",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1752836654002,
+      "tag": "0007_closed_siren",
+      "breakpoints": true
     }
   ]
 }
