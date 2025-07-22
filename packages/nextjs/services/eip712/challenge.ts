@@ -8,6 +8,9 @@ export const EIP_712_TYPED_DATA__CHALLENGE_SUBMIT = {
       { name: "challengeId", type: "string" },
       { name: "frontendUrl", type: "string" }, // Keep it in the type
       { name: "githubRepoUrl", type: "string" },
+      { name: "deployedContractAddress", type: "string" },
+      { name: "timeDifference", type: "string" },
+      { name: "gasDifference", type: "string" },
     ],
   },
   primaryType: "Message",
@@ -24,6 +27,9 @@ type IsValidSignatureParams = {
   challengeId: string;
   frontendUrl?: string | null; // Optional
   githubRepoUrl: string;
+  deployedContractAddress?: string | null; // Optional
+  timeDifference?: string | null; // Optional
+  gasDifference?: string | null; // Optional
 };
 
 export const isValidEIP712ChallengeSubmitSignature = async ({
@@ -32,13 +38,19 @@ export const isValidEIP712ChallengeSubmitSignature = async ({
   challengeId,
   frontendUrl,
   githubRepoUrl,
+  deployedContractAddress,
+  timeDifference,
+  gasDifference,
 }: IsValidSignatureParams) => {
-  // Construct the message object, conditionally adding frontendUrl
+  // Construct the message object, conditionally adding optional fields
   const message: { [key: string]: string } = {
     ...EIP_712_TYPED_DATA__CHALLENGE_SUBMIT.message,
     challengeId,
     githubRepoUrl,
     frontendUrl: frontendUrl || "", // Include frontendUrl, use empty string if null/undefined
+    deployedContractAddress: deployedContractAddress || "", // Include deployedContractAddress, use empty string if null/undefined
+    timeDifference: timeDifference || "", // Include timeDifference, use empty string if null/undefined
+    gasDifference: gasDifference || "", // Include gasDifference, use empty string if null/undefined
   };
 
   const typedData = {

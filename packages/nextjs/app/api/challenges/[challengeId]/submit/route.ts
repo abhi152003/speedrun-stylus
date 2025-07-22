@@ -17,6 +17,9 @@ export type ChallengeSubmitPayload = {
   userAddress: string;
   frontendUrl?: string;
   githubRepoUrl: string;
+  deployedContractAddress?: string;
+  timeDifference?: string;
+  gasDifference?: string;
   signature: `0x${string}`;
 };
 
@@ -27,7 +30,15 @@ export async function GET() {
 export async function POST(req: NextRequest, { params }: { params: { challengeId: ChallengeId } }) {
   try {
     const challengeId = params.challengeId;
-    const { userAddress, frontendUrl, githubRepoUrl, signature } = (await req.json()) as ChallengeSubmitPayload;
+    const {
+      userAddress,
+      frontendUrl,
+      githubRepoUrl,
+      deployedContractAddress,
+      timeDifference,
+      gasDifference,
+      signature,
+    } = (await req.json()) as ChallengeSubmitPayload;
 
     if (!userAddress || !githubRepoUrl || !signature) {
       return NextResponse.json(
@@ -61,6 +72,9 @@ export async function POST(req: NextRequest, { params }: { params: { challengeId
       challengeId,
       frontendUrl: frontendUrl || "",
       githubRepoUrl,
+      deployedContractAddress: deployedContractAddress || "",
+      timeDifference: timeDifference || "",
+      gasDifference: gasDifference || "",
     });
 
     if (!isValidSignature) {
@@ -92,6 +106,9 @@ export async function POST(req: NextRequest, { params }: { params: { challengeId
       challengeId,
       frontendUrl: frontendUrl || null,
       githubRepoUrl,
+      deployedContractAddress: deployedContractAddress || null,
+      timeDifference: timeDifference || null,
+      gasDifference: gasDifference || null,
       signature,
       githubUsername,
       reviewAction: ReviewAction.SUBMITTED,
