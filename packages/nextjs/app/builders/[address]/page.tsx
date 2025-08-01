@@ -6,7 +6,12 @@ import { Metadata } from "next";
 import { isAddress } from "viem";
 import { RouteRefresher } from "~~/components/RouteRefresher";
 import { isBgMember } from "~~/services/api-bg/builders";
-import { getLatestSubmissionPerChallengeByUser } from "~~/services/database/repositories/userChallenges";
+import {
+  getLatestSubmissionPerChallengeByGithubId,
+  getLatestSubmissionPerChallengeByUser,
+  getSubmissionCountForChallengeByAddress,
+  getSubmissionCountForChallengeByGithubId,
+} from "~~/services/database/repositories/userChallenges";
 import { getUserByAddress } from "~~/services/database/repositories/users";
 import { getEnsOrAddress } from "~~/utils/ens-or-address";
 
@@ -60,27 +65,59 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BuilderPage({ params }: { params: { address: string } }) {
   const { address: userAddress } = params;
-  const challenges = await getLatestSubmissionPerChallengeByUser(userAddress);
   const user = await getUserByAddress(userAddress);
-  const bgMemberExists = await isBgMember(userAddress);
 
   if (!user) {
     notFound();
   }
 
+  // Get GitHub username (prioritize socialGithub, fallback to checking challenges)
+  let githubUsername: string | null = user.socialGithub;
+  if (!githubUsername) {
+    // Fallback: get GitHub username from any challenge submission by this address
+    const fallbackChallenges = await getLatestSubmissionPerChallengeByUser(userAddress);
+    const challengeWithGithub = fallbackChallenges.find(c => c.githubUsername);
+    githubUsername = challengeWithGithub?.githubUsername || null;
+  }
+
+  // Get challenges by GitHub ID if we have a GitHub username, otherwise use address
+  const challenges = githubUsername
+    ? await getLatestSubmissionPerChallengeByGithubId(githubUsername)
+    : await getLatestSubmissionPerChallengeByUser(userAddress);
+
+  // Get submission counts for each challenge
+  const challengesWithCounts = await Promise.all(
+    challenges.map(async challenge => {
+      const submissionCount = githubUsername
+        ? await getSubmissionCountForChallengeByGithubId(githubUsername, challenge.challengeId)
+        : await getSubmissionCountForChallengeByAddress(challenge.userAddress, challenge.challengeId);
+
+      return {
+        ...challenge,
+        submissionCount,
+      };
+    }),
+  );
+
+  const bgMemberExists = await isBgMember(userAddress);
+
   return (
     <>
       <RouteRefresher />
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-14">
+      <div className="max-w-[1400px] mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
           <div className="lg:col-span-1">
             <UserProfileCard user={user} address={userAddress} />
           </div>
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-4">
             {bgMemberExists && <UpgradedToBGCard user={user} />}
             <h2 className="text-2xl font-bold mb-0 text-neutral pb-4">Challenges</h2>
-            {challenges.length > 0 ? (
-              <UserChallengesTable challenges={challenges} />
+            {challengesWithCounts.length > 0 ? (
+              <UserChallengesTable
+                challenges={challengesWithCounts}
+                currentUserAddress={userAddress}
+                isGithubView={!!githubUsername}
+              />
             ) : (
               <div className="bg-base-100 p-8 text-center rounded-lg text-neutral">
                 This builder hasn&apos;t completed any challenges.

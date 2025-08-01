@@ -4,9 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ChallengeStatus } from "./ChallengeStatus";
 import { useAccount } from "wagmi";
+import { CopyValueToClipboard } from "~~/components/CopyValueToClipboard";
 import { DateWithTooltip } from "~~/components/DateWithTooltip";
+import { AddressCopyIcon } from "~~/components/scaffold-eth/Address/AddressCopyIcon";
 import { ReviewAction } from "~~/services/database/config/types";
-import { UserChallenges } from "~~/services/database/repositories/userChallenges";
+import { UserChallenges, UserChallengesWithGithub } from "~~/services/database/repositories/userChallenges";
 
 // API base URL - read from environment variable or fallback to localhost
 const API_BASE_URL = process.env.NEXT_PUBLIC_CODE_REVIEW_API_URL || "http://localhost:8000";
@@ -18,7 +20,17 @@ const STATUS_CHECK_INTERVAL = 10000; // 10 seconds
 // Local storage key prefix for processing state
 const STORAGE_PREFIX = "score_processing_";
 
-const ChallengeRow = ({ challenge, isOwnProfile }: { challenge: UserChallenges[number]; isOwnProfile: boolean }) => {
+const ChallengeRow = ({
+  challenge,
+  isOwnProfile,
+  currentUserAddress,
+  isGithubView,
+}: {
+  challenge: (UserChallenges[number] | UserChallengesWithGithub[number]) & { submissionCount: number };
+  isOwnProfile: boolean;
+  currentUserAddress: string;
+  isGithubView: boolean;
+}) => {
   const isDisabled = challenge.challenge.disabled;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [processingStatus, setProcessingStatus] = useState(() => {
@@ -416,7 +428,7 @@ const ChallengeRow = ({ challenge, isOwnProfile }: { challenge: UserChallenges[n
     if (processingStatus === "processing") {
       return (
         <div className="flex flex-col w-full items-center gap-1 group relative">
-          <div className="w-32 bg-base-200 rounded-full h-2 overflow-hidden">
+          <div className="w-20 bg-base-200 rounded-full h-1.5 overflow-hidden">
             <div
               className="bg-primary h-full rounded-full transition-all duration-300"
               style={{ width: `${calculateProgress()}%` }}
@@ -488,9 +500,7 @@ const ChallengeRow = ({ challenge, isOwnProfile }: { challenge: UserChallenges[n
           <button
             onClick={handleModalOpen}
             disabled={!canSubmitForReview || isSubmitting}
-            className={`text-sm font-semibold rounded-lg px-3 py-1.5 text-white bg-teal-600 hover:bg-teal-700 transition-colors shadow-sm ${
-              isSubmitting ? "opacity-70" : ""
-            }`}
+            className={`btn btn-xs btn-primary ${isSubmitting ? "loading" : ""}`}
           >
             {isSubmitting ? (
               <span className="flex items-center">
@@ -529,45 +539,98 @@ const ChallengeRow = ({ challenge, isOwnProfile }: { challenge: UserChallenges[n
 
   return (
     <>
-      <tr key={localChallengeData.challengeId} className={`hover py-4 ${isDisabled ? "opacity-60" : ""}`}>
-        <td className="py-6">
+      <tr
+        key={localChallengeData.challengeId}
+        className={`hover:bg-base-200/50 transition-colors border-b border-base-200 ${isDisabled ? "opacity-60" : ""}`}
+      >
+        <td className="py-3 px-3">
           {isDisabled ? (
-            <span>{localChallengeData.challenge.challengeName}</span>
+            <span className="text-base-content/60 text-sm">{localChallengeData.challenge.challengeName}</span>
           ) : (
-            <Link href={`/challenge/${localChallengeData.challengeId}`} className="hover:underline">
+            <Link
+              href={`/challenge/${localChallengeData.challengeId}`}
+              className="hover:underline text-primary font-medium text-sm"
+            >
               🚩 Challenge {localChallengeData.challenge.sortOrder}: {localChallengeData.challenge.challengeName}
             </Link>
           )}
         </td>
-        <td>
+        <td className="text-center py-3 px-1">
           {localChallengeData.githubRepoUrl ? (
-            <a href={localChallengeData.githubRepoUrl} target="_blank" rel="noopener noreferrer" className="link">
+            <a
+              href={localChallengeData.githubRepoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-xs btn-outline btn-primary px-2"
+            >
               Code
             </a>
           ) : (
-            "-"
+            <span className="text-base-content/40">-</span>
           )}
         </td>
-        <td>
+        <td className="text-center py-3 px-1">
           {localChallengeData.frontendUrl ? (
-            <a href={localChallengeData.frontendUrl} target="_blank" rel="noopener noreferrer" className="link">
+            <a
+              href={localChallengeData.frontendUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-xs btn-outline btn-secondary px-2"
+            >
               Demo
             </a>
           ) : (
-            "-"
+            <span className="text-base-content/40">-</span>
           )}
         </td>
-        <td>
+        <td className="text-center py-3 px-1 text-xs">
           <DateWithTooltip timestamp={localChallengeData.submittedAt} />
         </td>
-        <td>
-          <ChallengeStatus
-            reviewAction={localChallengeData.reviewAction ?? ReviewAction.SUBMITTED}
-            comment={localChallengeData.reviewComment}
-            score={localChallengeData.score}
-          />
+        {isGithubView && (
+          <td className="text-center py-3 px-1">
+            {localChallengeData.userAddress.toLowerCase() !== currentUserAddress.toLowerCase() ? (
+              <div className="flex items-center justify-center gap-1">
+                <div className="truncate text-xs font-mono" title={localChallengeData.userAddress}>
+                  {localChallengeData.userAddress.slice(0, 4)}...{localChallengeData.userAddress.slice(-2)}
+                </div>
+                <CopyValueToClipboard
+                  text={localChallengeData.userAddress}
+                  position="top"
+                  Icon={({ className }: { className: string }) => (
+                    <AddressCopyIcon className={`${className} w-3 h-3`} address={localChallengeData.userAddress} />
+                  )}
+                />
+                <div className="badge badge-warning badge-xs" title="Submitted from different address">
+                  ⚠️
+                </div>
+              </div>
+            ) : (
+              <span className="text-base-content/60 flex items-center justify-center gap-1">
+                <span className="badge badge-success badge-xs">Current</span>
+                <CopyValueToClipboard
+                  text={localChallengeData.userAddress}
+                  position="top"
+                  Icon={({ className }: { className: string }) => (
+                    <AddressCopyIcon className={`${className} w-3 h-3`} address={localChallengeData.userAddress} />
+                  )}
+                />
+              </span>
+            )}
+          </td>
+        )}
+        <td className="text-center py-3 px-1">
+          <span className="badge badge-neutral badge-xs">{challenge.submissionCount}</span>
         </td>
-        <td className="text-center relative">{renderScoreColumn()}</td>
+        <td className="text-center py-3 px-1">
+          <div className="flex justify-center">
+            <ChallengeStatus
+              reviewAction={localChallengeData.reviewAction ?? ReviewAction.SUBMITTED}
+              comment={localChallengeData.reviewComment}
+              score={localChallengeData.score}
+            />
+          </div>
+        </td>
+        <td className="text-center py-3 px-1 relative">{renderScoreColumn()}</td>
       </tr>
 
       {/* Description Modal */}
@@ -652,34 +715,48 @@ const ChallengeRow = ({ challenge, isOwnProfile }: { challenge: UserChallenges[n
   );
 };
 
-export const UserChallengesTable = ({ challenges }: { challenges: UserChallenges }) => {
+export const UserChallengesTable = ({
+  challenges,
+  currentUserAddress,
+  isGithubView,
+}: {
+  challenges: ((UserChallenges[number] | UserChallengesWithGithub[number]) & { submissionCount: number })[];
+  currentUserAddress: string;
+  isGithubView: boolean;
+}) => {
   const { address: connectedAddress } = useAccount();
   const sortedChallenges = challenges.sort((a, b) => a.challenge.sortOrder - b.challenge.sortOrder);
 
   // Check if the profile being viewed belongs to the connected user
   const isOwnProfile = Boolean(
-    connectedAddress &&
-      challenges.length > 0 &&
-      challenges[0].userAddress.toLowerCase() === connectedAddress?.toLowerCase(),
+    connectedAddress && currentUserAddress.toLowerCase() === connectedAddress?.toLowerCase(),
   );
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="overflow-x-auto md:overflow-x-visible">
-        <table className="table bg-base-100 shadow-lg min-w-full overflow-hidden">
+      <div className="w-full">
+        <table className="table bg-base-100 shadow-lg w-full table-compact">
           <thead>
-            <tr className="text-sm">
-              <th>NAME</th>
-              <th>GITHUB REPO</th>
-              <th>LIVE DEMO</th>
-              <th>UPDATED</th>
-              <th>STATUS</th>
-              <th>SCORE</th>
+            <tr className="text-xs text-base-content/70 border-b border-base-300">
+              <th className="text-left font-semibold min-w-[300px]">NAME</th>
+              <th className="text-center font-semibold w-20">REPO</th>
+              <th className="text-center font-semibold w-20">DEMO</th>
+              <th className="text-center font-semibold w-24">UPDATED</th>
+              {isGithubView && isOwnProfile && <th className="text-center font-semibold w-32">ADDRESS</th>}
+              <th className="text-center font-semibold w-20">SUBS</th>
+              <th className="text-center font-semibold w-24">STATUS</th>
+              <th className="text-center font-semibold w-28">SCORE</th>
             </tr>
           </thead>
           <tbody>
             {sortedChallenges.map(challenge => (
-              <ChallengeRow key={challenge.challengeId} challenge={challenge} isOwnProfile={isOwnProfile} />
+              <ChallengeRow
+                key={challenge.challengeId}
+                challenge={challenge}
+                isOwnProfile={isOwnProfile}
+                currentUserAddress={currentUserAddress}
+                isGithubView={isGithubView && isOwnProfile}
+              />
             ))}
           </tbody>
         </table>

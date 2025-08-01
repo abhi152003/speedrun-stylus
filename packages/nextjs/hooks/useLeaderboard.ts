@@ -2,11 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 import { BatchUserStatus } from "~~/services/database/config/types";
 
 export type LeaderboardEntry = {
+  totalSubmissions: any;
   userAddress: string;
   socialX: string | null;
   socialGithub: string | null;
   batchStatus: BatchUserStatus | null;
   challengeCount: number;
+  maxSubmissionsForSingleChallenge: number;
 };
 
 export const useLeaderboard = () => {

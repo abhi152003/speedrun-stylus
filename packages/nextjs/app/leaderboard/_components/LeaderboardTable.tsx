@@ -7,7 +7,7 @@ import { useLeaderboard } from "~~/hooks/useLeaderboard";
 import { BatchUserStatus } from "~~/services/database/config/types";
 import { formatAddress } from "~~/utils/formatAddress";
 
-type SortField = "rank" | "displayName" | "challengeCount" | "score" | "batchStatus" | "github";
+type SortField = "rank" | "displayName" | "challengeCount" | "totalSubmissions" | "score" | "batchStatus" | "github";
 type SortDirection = "asc" | "desc";
 
 export const LeaderboardTable = () => {
@@ -33,6 +33,7 @@ export const LeaderboardTable = () => {
       displayName: entry.socialX || entry.socialGithub || formatAddress(entry.userAddress),
       github: entry.socialGithub,
       score: "Coming soon", // Placeholder for score
+      totalSubmissions: entry.totalSubmissions,
     }));
 
     return [...data].sort((a, b) => {
@@ -47,6 +48,9 @@ export const LeaderboardTable = () => {
           break;
         case "challengeCount":
           comparison = a.challengeCount - b.challengeCount;
+          break;
+        case "totalSubmissions":
+          comparison = a.totalSubmissions - b.totalSubmissions;
           break;
         case "score":
           // For now, all scores are the same, so no sorting change
@@ -133,92 +137,114 @@ export const LeaderboardTable = () => {
   }
 
   return (
-    <div className="overflow-x-auto">
-      <table className="table w-full">
-        <thead>
-          <tr className="bg-base-200">
-            <th
-              className="text-center cursor-pointer hover:bg-base-300 transition-colors duration-200 group"
-              onClick={() => handleSort("rank")}
-            >
-              Rank <SortIcon field="rank" />
-            </th>
-            <th
-              className="cursor-pointer hover:bg-base-300 transition-colors duration-200 group"
-              onClick={() => handleSort("displayName")}
-            >
-              Builder <SortIcon field="displayName" />
-            </th>
-            <th
-              className="text-center cursor-pointer hover:bg-base-300 transition-colors duration-200 group"
-              onClick={() => handleSort("challengeCount")}
-            >
-              Challenges Completed <SortIcon field="challengeCount" />
-            </th>
-            <th
-              className="text-center cursor-pointer hover:bg-base-300 transition-colors duration-200 group"
-              onClick={() => handleSort("score")}
-            >
-              Score <SortIcon field="score" />
-            </th>
-            <th
-              className="text-center cursor-pointer hover:bg-base-300 transition-colors duration-200 group"
-              onClick={() => handleSort("batchStatus")}
-            >
-              Status <SortIcon field="batchStatus" />
-            </th>
-            <th
-              className="text-center cursor-pointer hover:bg-base-300 transition-colors duration-200 group"
-              onClick={() => handleSort("github")}
-            >
-              GitHub <SortIcon field="github" />
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {formattedData.map(entry => (
-            <tr key={entry.userAddress} className="hover:bg-base-200 transition-colors duration-200">
-              <td className="text-center">{renderRankCell(entry.rank)}</td>
-              <td>
-                <Link href={`/builders/${entry.userAddress}`} className="link link-hover link-primary">
-                  {entry.displayName}
-                </Link>
-              </td>
-              <td className="text-center font-medium">{entry.challengeCount}</td>
-              <td className="text-center text-base-content/60 italic">{entry.score}</td>
-              <td className="text-center">
-                {entry.batchStatus === BatchUserStatus.GRADUATE && <div className="badge badge-success">Graduate</div>}
-                {entry.batchStatus === BatchUserStatus.CANDIDATE && <div className="badge badge-info">Candidate</div>}
-                {entry.batchStatus === null && <div className="badge badge-ghost">Builder</div>}
-              </td>
-              <td className="text-center">
-                {entry.github ? (
-                  <a
-                    href={`https://github.com/${entry.github}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="link link-hover flex items-center justify-center gap-1 group"
-                  >
-                    <div className="inline-block group-hover:text-primary transition-colors duration-200">
-                      <FaGithub />
-                    </div>
-                    <span className="group-hover:text-primary transition-colors duration-200">{entry.github}</span>
-                  </a>
-                ) : (
-                  "-"
-                )}
-              </td>
+    <div className="space-y-6">
+      {/* Leaderboard Table */}
+      <div className="overflow-x-auto">
+        <table className="table w-full">
+          <thead>
+            <tr className="bg-base-200">
+              <th
+                className="text-center cursor-pointer hover:bg-base-300 transition-colors duration-200 group"
+                onClick={() => handleSort("rank")}
+              >
+                Rank <SortIcon field="rank" />
+              </th>
+              <th
+                className="cursor-pointer hover:bg-base-300 transition-colors duration-200 group"
+                onClick={() => handleSort("displayName")}
+              >
+                Builder <SortIcon field="displayName" />
+              </th>
+              <th
+                className="text-center cursor-pointer hover:bg-base-300 transition-colors duration-200 group"
+                onClick={() => handleSort("challengeCount")}
+              >
+                <div
+                  className="tooltip tooltip-bottom"
+                  data-tip="Number of challenges successfully completed by the builder"
+                >
+                  Challenges Completed <SortIcon field="challengeCount" />
+                </div>
+              </th>
+              <th
+                className="text-center cursor-pointer hover:bg-base-300 transition-colors duration-200 group"
+                onClick={() => handleSort("totalSubmissions")}
+              >
+                <div
+                  className="tooltip tooltip-bottom"
+                  data-tip="Total number of submissions made across all challenges"
+                >
+                  Total Submissions <SortIcon field="totalSubmissions" />
+                </div>
+              </th>
+              <th
+                className="text-center cursor-pointer hover:bg-base-300 transition-colors duration-200 group"
+                onClick={() => handleSort("score")}
+              >
+                Score <SortIcon field="score" />
+              </th>
+              <th
+                className="text-center cursor-pointer hover:bg-base-300 transition-colors duration-200 group"
+                onClick={() => handleSort("batchStatus")}
+              >
+                Status <SortIcon field="batchStatus" />
+              </th>
+              <th
+                className="text-center cursor-pointer hover:bg-base-300 transition-colors duration-200 group"
+                onClick={() => handleSort("github")}
+              >
+                GitHub <SortIcon field="github" />
+              </th>
             </tr>
-          ))}
-          {formattedData.length === 0 && (
-            <tr>
-              <td colSpan={6} className="text-center py-8">
-                No data available
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {formattedData.map(entry => (
+              <tr key={entry.userAddress} className="hover:bg-base-200 transition-colors duration-200">
+                <td className="text-center">{renderRankCell(entry.rank)}</td>
+                <td>
+                  <Link href={`/builders/${entry.userAddress}`} className="link link-hover link-primary">
+                    {entry.displayName}
+                  </Link>
+                </td>
+                <td className="text-center font-medium">{entry.challengeCount}</td>
+                <td className="text-center font-medium">{entry.totalSubmissions}</td>
+                <td className="text-center text-base-content/60 italic">{entry.score}</td>
+                <td className="text-center">
+                  {entry.batchStatus === BatchUserStatus.GRADUATE && (
+                    <div className="badge badge-success">Graduate</div>
+                  )}
+                  {entry.batchStatus === BatchUserStatus.CANDIDATE && <div className="badge badge-info">Candidate</div>}
+                  {entry.batchStatus === null && <div className="badge badge-ghost">Builder</div>}
+                </td>
+                <td className="text-center">
+                  {entry.github ? (
+                    <a
+                      href={`https://github.com/${entry.github}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="link link-hover flex items-center justify-center gap-1 group"
+                    >
+                      <div className="inline-block group-hover:text-primary transition-colors duration-200">
+                        <FaGithub />
+                      </div>
+                      <span className="group-hover:text-primary transition-colors duration-200">{entry.github}</span>
+                    </a>
+                  ) : (
+                    "-"
+                  )}
+                </td>
+              </tr>
+            ))}
+            {formattedData.length === 0 && (
+              <tr>
+                <td colSpan={7} className="text-center py-8">
+                  No data available
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

@@ -6,7 +6,7 @@ import { ReviewAction } from "~~/services/database/config/types";
 export async function getLeaderboard() {
   try {
     // First, get all users with accepted challenges and their GitHub usernames
-    const rawLeaderboardData = await db
+    const acceptedChallengesData = await db
       .select({
         userAddress: users.userAddress,
         socialX: users.socialX,
@@ -19,6 +19,17 @@ export async function getLeaderboard() {
       .innerJoin(userChallenges, eq(userChallenges.userAddress, users.userAddress))
       .where(eq(userChallenges.reviewAction, ReviewAction.ACCEPTED));
 
+    // Get all submissions (including rejected ones) to count total submissions per GitHub user
+    const allSubmissionsData = await db
+      .select({
+        userAddress: users.userAddress,
+        socialGithub: users.socialGithub,
+        challengeId: userChallenges.challengeId,
+        githubFromChallenge: userChallenges.githubUsername,
+      })
+      .from(users)
+      .innerJoin(userChallenges, eq(userChallenges.userAddress, users.userAddress));
+
     // Process data to determine GitHub username and group by GitHub ID
     const githubUserMap = new Map<
       string,
@@ -29,16 +40,18 @@ export async function getLeaderboard() {
         batchStatus: any;
         challengeIds: Set<string>;
         challengeCount: number;
+        totalSubmissions: number;
       }
     >();
 
-    // Process each entry to build the map grouped by GitHub username
-    for (const entry of rawLeaderboardData) {
+    // First, process accepted challenges to build the base map
+    for (const entry of acceptedChallengesData) {
       // Determine the GitHub username (prioritize user's social GitHub, then challenge GitHub)
       const githubUsername = entry.socialGithub || entry.githubFromChallenge;
 
       // Skip entries without GitHub username
       if (!githubUsername) {
+        console.log("Skipping entry without GitHub username:", entry);
         continue;
       }
 
@@ -52,6 +65,7 @@ export async function getLeaderboard() {
           batchStatus: entry.batchStatus,
           challengeIds: new Set(),
           challengeCount: 0,
+          totalSubmissions: 0,
         });
       }
 
@@ -77,6 +91,34 @@ export async function getLeaderboard() {
       }
     }
 
+    // Count total submissions per GitHub user (including all submission attempts)
+    const githubSubmissionCounts = new Map<string, number>();
+
+    console.log("Total submissions data entries:", allSubmissionsData.length);
+
+    for (const entry of allSubmissionsData) {
+      const githubUsername = entry.socialGithub || entry.githubFromChallenge;
+
+      if (!githubUsername) {
+        console.log("Skipping entry without GitHub username:", entry);
+        continue;
+      }
+
+      const key = githubUsername.toLowerCase();
+      githubSubmissionCounts.set(key, (githubSubmissionCounts.get(key) || 0) + 1);
+    }
+
+    console.log("GitHub submission counts map size:", githubSubmissionCounts.size);
+    console.log(
+      "Total submissions across all GitHub users:",
+      Array.from(githubSubmissionCounts.values()).reduce((sum, count) => sum + count, 0),
+    );
+
+    // Update total submissions for each GitHub user
+    for (const [githubKey, userEntry] of githubUserMap.entries()) {
+      userEntry.totalSubmissions = githubSubmissionCounts.get(githubKey) || 0;
+    }
+
     // Convert map to array and sort by challenge count descending
     const processedData = Array.from(githubUserMap.values())
       .map(entry => ({
@@ -85,6 +127,7 @@ export async function getLeaderboard() {
         socialGithub: entry.socialGithub,
         batchStatus: entry.batchStatus,
         challengeCount: entry.challengeCount,
+        totalSubmissions: entry.totalSubmissions,
       }))
       .sort((a, b) => b.challengeCount - a.challengeCount);
 
