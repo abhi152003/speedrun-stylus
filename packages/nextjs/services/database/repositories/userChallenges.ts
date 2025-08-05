@@ -1,4 +1,4 @@
-import { InferInsertModel, eq } from "drizzle-orm";
+import { InferInsertModel, and, eq, isNotNull, ne } from "drizzle-orm";
 import { db } from "~~/services/database/config/postgresClient";
 import { lower, userChallenges, users } from "~~/services/database/config/schema";
 
@@ -28,6 +28,14 @@ export async function getLatestSubmissionPerChallengeByUser(userAddress: string)
 
 export async function getTotalSubmissionsCount(): Promise<number> {
   const totalCount = await db.$count(userChallenges);
+  return totalCount;
+}
+
+export async function getTotalDeployedContractsCount(): Promise<number> {
+  const totalCount = await db.$count(
+    userChallenges,
+    and(isNotNull(userChallenges.deployedContractAddress), ne(userChallenges.deployedContractAddress, "")),
+  );
   return totalCount;
 }
 

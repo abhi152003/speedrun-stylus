@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getTotalSubmissionsCount } from "~~/services/database/repositories/userChallenges";
+import {
+  getTotalDeployedContractsCount,
+  getTotalSubmissionsCount,
+} from "~~/services/database/repositories/userChallenges";
 import { getAllUsers } from "~~/services/database/repositories/users";
 
 export async function GET(request: NextRequest) {
@@ -11,13 +14,14 @@ export async function GET(request: NextRequest) {
 
     const offset = (page - 1) * limit;
 
-    const [{ users, totalCount }, totalSubmissions] = await Promise.all([
+    const [{ users, totalCount }, totalSubmissions, totalDeployedContracts] = await Promise.all([
       getAllUsers({
         offset,
         limit,
         search,
       }),
       getTotalSubmissionsCount(),
+      getTotalDeployedContractsCount(),
     ]);
 
     return NextResponse.json({
@@ -33,6 +37,7 @@ export async function GET(request: NextRequest) {
       stats: {
         totalUsers: totalCount,
         totalSubmissions,
+        totalDeployedContracts,
       },
     });
   } catch (error) {
