@@ -9,6 +9,7 @@ export type LeaderboardEntry = {
   batchStatus: BatchUserStatus | null;
   challengeCount: number;
   maxSubmissionsForSingleChallenge: number;
+  totalScore: number;
 };
 
 export const useLeaderboard = () => {

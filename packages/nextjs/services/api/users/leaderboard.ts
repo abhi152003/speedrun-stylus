@@ -14,6 +14,7 @@ export async function getLeaderboard() {
         batchStatus: users.batchStatus,
         challengeId: userChallenges.challengeId,
         githubFromChallenge: userChallenges.githubUsername,
+        score: userChallenges.score,
       })
       .from(users)
       .innerJoin(userChallenges, eq(userChallenges.userAddress, users.userAddress))
@@ -41,6 +42,7 @@ export async function getLeaderboard() {
         challengeIds: Set<string>;
         challengeCount: number;
         totalSubmissions: number;
+        totalScore: number;
       }
     >();
 
@@ -66,6 +68,7 @@ export async function getLeaderboard() {
           challengeIds: new Set(),
           challengeCount: 0,
           totalSubmissions: 0,
+          totalScore: 0,
         });
       }
 
@@ -73,11 +76,19 @@ export async function getLeaderboard() {
 
       // This should always exist since we just checked/created it above
       if (userEntry) {
+        // Check if this is a new challenge for this user
+        const isNewChallenge = !userEntry.challengeIds.has(entry.challengeId);
+
         // Add challenge to the set (automatically handles duplicates)
         userEntry.challengeIds.add(entry.challengeId);
 
         // Update challenge count
         userEntry.challengeCount = userEntry.challengeIds.size;
+
+        // Add score to total only for new challenges (to avoid double counting)
+        if (isNewChallenge && entry.score) {
+          userEntry.totalScore += entry.score;
+        }
 
         // If this address has batch status and the current entry doesn't, prefer this one
         if (entry.batchStatus && !userEntry.batchStatus) {
@@ -128,6 +139,7 @@ export async function getLeaderboard() {
         batchStatus: entry.batchStatus,
         challengeCount: entry.challengeCount,
         totalSubmissions: entry.totalSubmissions,
+        totalScore: entry.totalScore,
       }))
       .sort((a, b) => b.challengeCount - a.challengeCount);
 

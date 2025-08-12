@@ -1,6 +1,7 @@
 import { InferInsertModel, and, eq, isNotNull, ne } from "drizzle-orm";
 import { db } from "~~/services/database/config/postgresClient";
 import { lower, userChallenges, users } from "~~/services/database/config/schema";
+import { ReviewAction } from "~~/services/database/config/types";
 
 export type UserChallengeInsert = InferInsertModel<typeof userChallenges>;
 export type UserChallenges = Awaited<ReturnType<typeof getLatestSubmissionPerChallengeByUser>>;
@@ -88,9 +89,26 @@ export async function getLatestSubmissionPerChallengeByGithubId(githubUsername: 
     const latestChallenges = new Map<string, any>();
 
     // Process each entry to get the latest submission per challenge
+    // Prioritize ACCEPTED challenges with scores, then fall back to latest submission
     for (const entry of githubChallenges) {
       const existing = latestChallenges.get(entry.challengeId);
-      if (!existing || entry.id > existing.id) {
+
+      let shouldUpdate = false;
+      if (!existing) {
+        shouldUpdate = true;
+      } else {
+        // Prefer ACCEPTED challenges with scores over other submissions
+        const existingIsAcceptedWithScore = existing.reviewAction === ReviewAction.ACCEPTED && existing.score;
+        const entryIsAcceptedWithScore = entry.reviewAction === ReviewAction.ACCEPTED && entry.score;
+
+        if (entryIsAcceptedWithScore && !existingIsAcceptedWithScore) {
+          shouldUpdate = true;
+        } else if (entryIsAcceptedWithScore === existingIsAcceptedWithScore && entry.id > existing.id) {
+          shouldUpdate = true;
+        }
+      }
+
+      if (shouldUpdate) {
         const challenge = challengeDataMap.get(entry.challengeId);
         if (challenge) {
           latestChallenges.set(entry.challengeId, {

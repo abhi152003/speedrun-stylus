@@ -32,7 +32,7 @@ export const LeaderboardTable = () => {
       rank: index + 1,
       displayName: entry.socialX || entry.socialGithub || formatAddress(entry.userAddress),
       github: entry.socialGithub,
-      score: "Coming soon", // Placeholder for score
+      score: entry.totalScore || 0,
       totalSubmissions: entry.totalSubmissions,
     }));
 
@@ -53,8 +53,7 @@ export const LeaderboardTable = () => {
           comparison = a.totalSubmissions - b.totalSubmissions;
           break;
         case "score":
-          // For now, all scores are the same, so no sorting change
-          comparison = 0;
+          comparison = a.score - b.score;
           break;
         case "batchStatus":
           const statusOrder: Record<string, number> = {
@@ -208,7 +207,7 @@ export const LeaderboardTable = () => {
                 </td>
                 <td className="text-center font-medium">{entry.challengeCount}</td>
                 <td className="text-center font-medium">{entry.totalSubmissions}</td>
-                <td className="text-center text-base-content/60 italic">{entry.score}</td>
+                <td className="text-center font-medium">{entry.score}</td>
                 <td className="text-center">
                   {entry.batchStatus === BatchUserStatus.GRADUATE && (
                     <div className="badge badge-success">Graduate</div>
