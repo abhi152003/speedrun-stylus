@@ -12,7 +12,7 @@ type SortDirection = "asc" | "desc";
 
 export const LeaderboardTable = () => {
   const { data: leaderboardData, isLoading, error } = useLeaderboard();
-  const [sortField, setSortField] = useState<SortField>("challengeCount");
+  const [sortField, setSortField] = useState<SortField>("score");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
 
   const handleSort = (field: SortField) => {
@@ -27,16 +27,28 @@ export const LeaderboardTable = () => {
   const formattedData = useMemo(() => {
     if (!leaderboardData) return [];
 
-    const data = leaderboardData.map((entry, index) => ({
+    // Base data without rank
+    const baseData = leaderboardData.map(entry => ({
       ...entry,
-      rank: index + 1,
       displayName: entry.socialX || entry.socialGithub || formatAddress(entry.userAddress),
       github: entry.socialGithub,
       score: entry.totalScore || 0,
       totalSubmissions: entry.totalSubmissions,
     }));
 
-    return [...data].sort((a, b) => {
+    // Compute rank strictly by score (descending)
+    const scoreSorted = [...baseData].sort((a, b) => b.score - a.score);
+    const rankByAddress = new Map<string, number>();
+    scoreSorted.forEach((entry, idx) => {
+      rankByAddress.set(entry.userAddress, idx + 1);
+    });
+
+    const dataWithRank = baseData.map(entry => ({
+      ...entry,
+      rank: rankByAddress.get(entry.userAddress) || 0,
+    }));
+
+    return [...dataWithRank].sort((a, b) => {
       let comparison = 0;
 
       switch (sortField) {
