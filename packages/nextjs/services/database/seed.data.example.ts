@@ -51,6 +51,17 @@ export const seedUsers: (typeof users.$inferInsert)[] = [
 
 export const seedChallenges: (typeof challenges.$inferInsert)[] = [
   {
+    id: ChallengeId.ERC20_FOUNDATION,
+    challengeName: "🪙 Foundation Challenge: ERC20 Token",
+    github: "abhi152003/speedrun_stylus:erc20",
+    autograding: false,
+    description:
+      "🏆 Complete the Foundation Challenge to earn your NFT certificate! Create a comprehensive ERC20 token management system using Stylus and Rust. You'll compile and deploy your first Stylus-based ERC20 smart contract, build a modern React interface with essential components, and deploy to Arbitrum Sepolia. Master minting, transferring, approving, and burning tokens while creating a beautiful frontend. Once completed, you'll be able to mint your achievement certificate NFT! 🚀",
+    sortOrder: -1,
+    previewImage: "/assets/challenges/erc20.svg",
+    dependencies: [],
+  },
+  {
     id: ChallengeId.SIMPLE_COUNTER_EXAMPLE,
     challengeName: "🎟 Simple Counter Example",
     github: "abhi152003/speedrun_stylus:counter",

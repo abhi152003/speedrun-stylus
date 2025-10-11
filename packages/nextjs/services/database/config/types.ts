@@ -27,6 +27,7 @@ export enum ChallengeId {
   VIBEKIT_SETUP = "vibekit-setup",
   VIBEKIT_BASIC_AGENTS = "vibekit-basic-agents",
   VIBEKIT_ADVANCED_AGENTS = "vibekit-advanced-agents",
+  ERC20_FOUNDATION = "erc20-foundation",
 }
 
 export enum BatchStatus {
