@@ -50,7 +50,14 @@ export async function GET(req: Request) {
     });
 
     // Redirect back to the challenge page
-    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_HOST}/challenge/${url.searchParams.get("challenge_id")}`);
+    const challengeId = url.searchParams.get("challenge_id");
+
+    // Handle Foundation challenge redirect differently
+    if (challengeId === "erc20-foundation") {
+      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_HOST}/foundation`);
+    }
+
+    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_HOST}/challenge/${challengeId}`);
   } catch (error) {
     console.error("GitHub auth error:", error);
     return NextResponse.redirect(`${process.env.NEXT_PUBLIC_HOST}/error?message=Authentication failed`);

@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { notification } from "~~/utils/scaffold-eth";
 
@@ -12,6 +12,7 @@ export const SubmitFoundationModal = forwardRef<HTMLDialogElement, SubmitFoundat
   ({ closeModal }, ref) => {
     const { address: connectedAddress } = useAccount();
     const [isLoading, setIsLoading] = useState(false);
+    const [githubUsername, setGithubUsername] = useState<string | null>(null);
     const [formData, setFormData] = useState({
       githubRepo: "",
       deployedUrl: "",
@@ -21,6 +22,23 @@ export const SubmitFoundationModal = forwardRef<HTMLDialogElement, SubmitFoundat
       githubRepo: "",
       contractAddress: "",
     });
+
+    // Get GitHub username from auth status (same as other challenges)
+    useEffect(() => {
+      const fetchGithubUsername = async () => {
+        try {
+          const response = await fetch("/api/auth/github/status");
+          const data = await response.json();
+          if (data.authenticated && data.username) {
+            setGithubUsername(data.username);
+          }
+        } catch (error) {
+          console.error("Failed to fetch GitHub username:", error);
+        }
+      };
+
+      fetchGithubUsername();
+    }, []);
 
     const validateGithubRepo = (repo: string): boolean => {
       // Format: owner/repo or full GitHub URL
@@ -66,20 +84,13 @@ export const SubmitFoundationModal = forwardRef<HTMLDialogElement, SubmitFoundat
       setIsLoading(true);
 
       try {
-        // Verify GitHub repository exists
+        // Extract repository path
         const githubRepoMatch = formData.githubRepo.match(
           /^(?:https?:\/\/github\.com\/)?([a-zA-Z0-9-]+\/[a-zA-Z0-9_.-]+)/,
         );
         const repoPath = githubRepoMatch ? githubRepoMatch[1] : formData.githubRepo;
 
-        const githubCheckResponse = await fetch(`https://api.github.com/repos/${repoPath}`);
-        if (!githubCheckResponse.ok) {
-          notification.error("GitHub repository not found. Please verify the repository exists.");
-          setIsLoading(false);
-          return;
-        }
-
-        // Submit to MongoDB via API
+        // Submit to MongoDB via API (repository verification will be done server-side with authentication)
         const response = await fetch("/api/foundation/submit", {
           method: "POST",
           headers: {
@@ -88,6 +99,7 @@ export const SubmitFoundationModal = forwardRef<HTMLDialogElement, SubmitFoundat
           },
           body: JSON.stringify({
             githubRepo: repoPath,
+            githubUsername: githubUsername,
             deployedUrl: formData.deployedUrl.trim() || undefined,
             contractAddress: formData.contractAddress.trim(),
           }),
@@ -139,9 +151,29 @@ export const SubmitFoundationModal = forwardRef<HTMLDialogElement, SubmitFoundat
           </form>
 
           <h3 className="font-bold text-2xl mb-4">🏆 Submit Foundation Challenge</h3>
-          <p className="text-sm opacity-70 mb-6">
+          <p className="text-sm opacity-70 mb-2">
             Complete all required fields to submit your Foundation Challenge and earn your NFT certificate!
           </p>
+          {githubUsername && (
+            <div className="alert alert-success mb-4">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="stroke-current shrink-0 h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span>
+                Authenticated as <strong>@{githubUsername}</strong>
+              </span>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* GitHub Repository */}
