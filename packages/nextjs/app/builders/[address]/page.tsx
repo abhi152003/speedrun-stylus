@@ -6,7 +6,10 @@ import { Metadata } from "next";
 import { isAddress } from "viem";
 import { RouteRefresher } from "~~/components/RouteRefresher";
 import { isBgMember } from "~~/services/api-bg/builders";
-import { getFoundationSubmissionByAddress } from "~~/services/database/repositories/foundationUsers";
+import {
+  getFoundationSubmissionByAddress,
+  getFoundationSubmissionByGithubUsername,
+} from "~~/services/database/repositories/foundationUsers";
 import {
   getLatestSubmissionPerChallengeByGithubId,
   getLatestSubmissionPerChallengeByUser,
@@ -102,8 +105,9 @@ export default async function BuilderPage({ params }: { params: { address: strin
 
   const bgMemberExists = await isBgMember(userAddress);
 
-  // Get foundation submission
-  const foundationSubmission = await getFoundationSubmissionByAddress(userAddress);
+  const foundationSubmission = githubUsername
+    ? await getFoundationSubmissionByGithubUsername(githubUsername)
+    : await getFoundationSubmissionByAddress(userAddress);
 
   // Add foundation submission as a special challenge if it exists
   const allChallenges = foundationSubmission

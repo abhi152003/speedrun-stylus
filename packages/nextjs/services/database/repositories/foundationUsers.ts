@@ -62,6 +62,59 @@ export async function getFoundationSubmissionByAddress(address: string): Promise
 }
 
 /**
+ * Get foundation submission by GitHub username
+ */
+export async function getFoundationSubmissionByGithubUsername(
+  githubUsername: string,
+): Promise<FoundationSubmission | null> {
+  try {
+    const db = await getMongoDb();
+    const collection = db.collection("foundation-users");
+
+    const normalizedUsername = githubUsername.toLowerCase();
+
+    let submission = await collection.findOne({
+      $expr: {
+        $eq: [{ $toLower: "$githubUsername" }, normalizedUsername],
+      },
+    });
+
+    if (!submission) {
+      const allSubmissions = await collection.find({}).toArray();
+      const foundSubmission = allSubmissions.find(sub => {
+        if (sub.githubRepo) {
+          // Extract username from githubRepo (format: "username/repo")
+          const repoUsername = sub.githubRepo.split("/")[0]?.toLowerCase();
+          return repoUsername === normalizedUsername;
+        }
+        return false;
+      });
+      submission = foundSubmission || null;
+    }
+
+    if (!submission) {
+      return null;
+    }
+
+    return {
+      _id: submission._id?.toString(),
+      walletAddress: submission.walletAddress,
+      githubRepo: submission.githubRepo,
+      githubUsername: submission.githubUsername || null,
+      deployedUrl: submission.deployedUrl || null,
+      contractAddress: submission.contractAddress,
+      submittedAt: submission.submittedAt,
+      updatedAt: submission.updatedAt,
+      createdAt: submission.createdAt,
+      status: submission.status,
+    };
+  } catch (error) {
+    console.error("Error getting foundation submission by GitHub username:", error);
+    return null;
+  }
+}
+
+/**
  * Check if a wallet address has completed the foundation challenge
  */
 export async function hasFoundationCertificate(address: string): Promise<boolean> {
