@@ -2,6 +2,30 @@ import { eq } from "drizzle-orm";
 import { db } from "~~/services/database/config/postgresClient";
 import { userChallenges, users } from "~~/services/database/config/schema";
 import { ReviewAction } from "~~/services/database/config/types";
+import {
+  getAllFoundationSubmissions,
+  getFoundationCertificateStatusBatch,
+} from "~~/services/database/repositories/foundationUsers";
+
+// Helper function to extract GitHub username from repo URL
+function extractGithubUsername(repoUrl: string | null): string | null {
+  if (!repoUrl) return null;
+
+  // Match patterns like:
+  // https://github.com/username/repo
+  // github.com/username/repo
+  // git@github.com:username/repo.git
+  const patterns = [/github\.com[:/]([^/]+)/i, /github\.com\/([^/]+)/i];
+
+  for (const pattern of patterns) {
+    const match = repoUrl.match(pattern);
+    if (match && match[1]) {
+      return match[1];
+    }
+  }
+
+  return null;
+}
 
 export async function getLeaderboard() {
   try {
@@ -14,6 +38,7 @@ export async function getLeaderboard() {
         batchStatus: users.batchStatus,
         challengeId: userChallenges.challengeId,
         githubFromChallenge: userChallenges.githubUsername,
+        githubRepoUrl: userChallenges.githubRepoUrl,
         score: userChallenges.score,
       })
       .from(users)
@@ -27,6 +52,7 @@ export async function getLeaderboard() {
         socialGithub: users.socialGithub,
         challengeId: userChallenges.challengeId,
         githubFromChallenge: userChallenges.githubUsername,
+        githubRepoUrl: userChallenges.githubRepoUrl,
       })
       .from(users)
       .innerJoin(userChallenges, eq(userChallenges.userAddress, users.userAddress));
@@ -48,8 +74,9 @@ export async function getLeaderboard() {
 
     // First, process accepted challenges to build the base map
     for (const entry of acceptedChallengesData) {
-      // Determine the GitHub username (prioritize user's social GitHub, then challenge GitHub)
-      const githubUsername = entry.socialGithub || entry.githubFromChallenge;
+      // Determine the GitHub username (prioritize user's social GitHub, then challenge GitHub, then extract from repo URL)
+      const githubUsername =
+        entry.socialGithub || entry.githubFromChallenge || extractGithubUsername(entry.githubRepoUrl);
 
       // Skip entries without GitHub username
       if (!githubUsername) {
@@ -108,7 +135,8 @@ export async function getLeaderboard() {
     console.log("Total submissions data entries:", allSubmissionsData.length);
 
     for (const entry of allSubmissionsData) {
-      const githubUsername = entry.socialGithub || entry.githubFromChallenge;
+      const githubUsername =
+        entry.socialGithub || entry.githubFromChallenge || extractGithubUsername(entry.githubRepoUrl);
 
       if (!githubUsername) {
         console.log("Skipping entry without GitHub username:", entry);
@@ -143,7 +171,74 @@ export async function getLeaderboard() {
       }))
       .sort((a, b) => b.challengeCount - a.challengeCount);
 
-    return processedData;
+    // Get all foundation submissions from MongoDB
+    const foundationSubmissions = await getAllFoundationSubmissions();
+
+    // Get foundation certificate status for all users
+    const addresses = processedData.map(entry => entry.userAddress);
+    const foundationStatusMap = await getFoundationCertificateStatusBatch(addresses);
+
+    // Create a map of existing users by wallet address (normalized)
+    const existingUsersMap = new Map<string, (typeof processedData)[0]>();
+    for (const entry of processedData) {
+      existingUsersMap.set(entry.userAddress.toLowerCase(), entry);
+    }
+
+    // Add foundation-only users to the leaderboard
+    const foundationOnlyUsers: Array<{
+      userAddress: string;
+      socialX: string | null;
+      socialGithub: string | null;
+      batchStatus: any;
+      challengeCount: number;
+      totalSubmissions: number;
+      totalScore: number;
+      hasFoundationCertificate: boolean;
+    }> = [];
+
+    for (const foundationUser of foundationSubmissions) {
+      const normalizedAddress = foundationUser.walletAddress.toLowerCase();
+
+      // If user is not already in the leaderboard from PostgreSQL, add them
+      if (!existingUsersMap.has(normalizedAddress)) {
+        // Extract GitHub username from githubUsername field or from githubRepo URL
+        const githubUsername =
+          foundationUser.githubUsername || extractGithubUsername(`https://github.com/${foundationUser.githubRepo}`);
+
+        foundationOnlyUsers.push({
+          userAddress: foundationUser.walletAddress,
+          socialX: null,
+          socialGithub: githubUsername,
+          batchStatus: null,
+          challengeCount: 1, // Foundation challenge counts as 1 completed challenge
+          totalSubmissions: 1, // They submitted foundation challenge
+          totalScore: 0, // Foundation challenge doesn't have a score in the regular system
+          hasFoundationCertificate: true,
+        });
+
+        // Mark this address as having foundation certificate in the status map
+        foundationStatusMap.set(normalizedAddress, true);
+      }
+    }
+
+    // Add foundation certificate status to existing users
+    const dataWithFoundationStatus = processedData.map(entry => ({
+      ...entry,
+      hasFoundationCertificate: foundationStatusMap.get(entry.userAddress.toLowerCase()) || false,
+    }));
+
+    // Merge foundation-only users with existing users
+    const mergedData = [...dataWithFoundationStatus, ...foundationOnlyUsers];
+
+    // Sort by challenge count descending, then by total score
+    mergedData.sort((a, b) => {
+      if (b.challengeCount !== a.challengeCount) {
+        return b.challengeCount - a.challengeCount;
+      }
+      return b.totalScore - a.totalScore;
+    });
+
+    return mergedData;
   } catch (error) {
     console.error("Error fetching leaderboard data:", error);
     throw error;

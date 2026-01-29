@@ -34,10 +34,10 @@ export const HeaderMenuLinks = ({ hideItemsByLabel, user }: { hideItemsByLabel?:
         label: "Leaderboard",
         href: "/leaderboard",
       },
-      // {
-      //   label: "Foundation",
-      //   href: "/foundation",
-      // },
+      {
+        label: "Foundation",
+        href: "/foundation",
+      },
     ];
 
     const userMenuLinks: HeaderMenuLink[] = [

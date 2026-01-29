@@ -6,6 +6,7 @@ import { Metadata } from "next";
 import { isAddress } from "viem";
 import { RouteRefresher } from "~~/components/RouteRefresher";
 import { isBgMember } from "~~/services/api-bg/builders";
+import { getFoundationSubmissionByAddress } from "~~/services/database/repositories/foundationUsers";
 import {
   getLatestSubmissionPerChallengeByGithubId,
   getLatestSubmissionPerChallengeByUser,
@@ -101,6 +102,46 @@ export default async function BuilderPage({ params }: { params: { address: strin
 
   const bgMemberExists = await isBgMember(userAddress);
 
+  // Get foundation submission
+  const foundationSubmission = await getFoundationSubmissionByAddress(userAddress);
+
+  // Add foundation submission as a special challenge if it exists
+  const allChallenges = foundationSubmission
+    ? [
+        {
+          id: 0,
+          challengeId: "foundation",
+          userAddress: foundationSubmission.walletAddress,
+          githubRepoUrl: `https://github.com/${foundationSubmission.githubRepo}`,
+          frontendUrl: foundationSubmission.deployedUrl || null,
+          contractUrl: `https://sepolia.arbiscan.io/address/${foundationSubmission.contractAddress}`,
+          deployedContractAddress: foundationSubmission.contractAddress,
+          submittedAt: foundationSubmission.submittedAt,
+          githubUsername: foundationSubmission.githubUsername || null,
+          reviewAction: null,
+          reviewComment: null,
+          score: null,
+          timeDifference: null,
+          gasDifference: null,
+          signature: null,
+          challenge: {
+            id: "foundation",
+            challengeId: "foundation",
+            challengeName: "Foundation - ERC20 Token",
+            sortOrder: -1,
+            disabled: false,
+            description: "Complete the Foundation ERC20 Token challenge",
+            previewImage: null,
+            externalLink: null,
+            isActive: true,
+            createdAt: new Date(),
+          },
+          submissionCount: 1,
+        },
+        ...challengesWithCounts,
+      ]
+    : challengesWithCounts;
+
   return (
     <>
       <RouteRefresher />
@@ -112,9 +153,9 @@ export default async function BuilderPage({ params }: { params: { address: strin
           <div className="lg:col-span-4">
             {bgMemberExists && <UpgradedToBGCard user={user} />}
             <h2 className="text-2xl font-bold mb-0 text-neutral pb-4">Challenges</h2>
-            {challengesWithCounts.length > 0 ? (
+            {allChallenges.length > 0 ? (
               <UserChallengesTable
-                challenges={challengesWithCounts}
+                challenges={allChallenges}
                 currentUserAddress={userAddress}
                 isGithubView={!!githubUsername}
               />

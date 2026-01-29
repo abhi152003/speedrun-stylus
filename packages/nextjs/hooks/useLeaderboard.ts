@@ -10,6 +10,7 @@ export type LeaderboardEntry = {
   challengeCount: number;
   maxSubmissionsForSingleChallenge: number;
   totalScore: number;
+  hasFoundationCertificate: boolean;
 };
 
 export const useLeaderboard = () => {

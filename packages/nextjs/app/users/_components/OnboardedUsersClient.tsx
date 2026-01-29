@@ -59,6 +59,7 @@ export const OnboardedUsersClient = () => {
         totalUsers={stats?.totalUsers || pagination?.totalCount || 0}
         totalSubmissions={stats?.totalSubmissions || 0}
         totalDeployedContracts={stats?.totalDeployedContracts || 0}
+        foundationCount={stats?.foundationCount || 0}
         isLoading={isLoading}
       />
 

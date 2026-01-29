@@ -199,7 +199,13 @@ const ChallengeRow = ({
           });
 
           // Save score to database if found
-          if (data.result?.score) {
+          if (data.result?.score !== undefined && data.result?.score !== null) {
+            setLocalChallengeData(prev => ({
+              ...prev,
+              score: data.result.score,
+            }));
+            setProcessingStatus("idle");
+
             const saveScoreToDatabase = async (score: number) => {
               try {
                 const response = await fetch(API_UPDATE_ENDPOINT, {
@@ -225,14 +231,8 @@ const ChallengeRow = ({
               }
             };
 
-            const saveResult = await saveScoreToDatabase(data.result.score);
-            if (saveResult) {
-              // Update local state to show the score immediately
-              setLocalChallengeData(prev => ({
-                ...prev,
-                score: data.result.score,
-              }));
-            }
+            // Fire and forget - score is already shown to user
+            saveScoreToDatabase(data.result.score);
           }
 
           // Clear interval
@@ -417,7 +417,7 @@ const ChallengeRow = ({
   };
 
   const renderScoreColumn = () => {
-    if (localChallengeData.score) {
+    if (localChallengeData.score !== null && localChallengeData.score !== undefined) {
       return (
         <div className="inline-flex items-center justify-center font-bold rounded-lg px-3 py-1.5 text-sm text-white bg-teal-600">
           {localChallengeData.score}/100
@@ -537,15 +537,19 @@ const ChallengeRow = ({
     return <span className="text-base-content/60">-</span>;
   };
 
+  const isFoundationChallenge = localChallengeData.challengeId === "foundation";
+
   return (
     <>
       <tr
         key={localChallengeData.challengeId}
-        className={`hover:bg-base-200/50 transition-colors border-b border-base-200 ${isDisabled ? "opacity-60" : ""}`}
+        className={`hover:bg-base-200/50 transition-colors border-b border-base-200 ${isDisabled ? "opacity-60" : ""} ${isFoundationChallenge ? "bg-gradient-to-r from-primary/5 to-secondary/5" : ""}`}
       >
         <td className="py-3 px-3">
           {isDisabled ? (
             <span className="text-base-content/60 text-sm">{localChallengeData.challenge.challengeName}</span>
+          ) : localChallengeData.challengeId === "foundation" ? (
+            <span className="text-primary font-medium text-sm">🏆 {localChallengeData.challenge.challengeName}</span>
           ) : (
             <Link
               href={`/challenge/${localChallengeData.challengeId}`}
