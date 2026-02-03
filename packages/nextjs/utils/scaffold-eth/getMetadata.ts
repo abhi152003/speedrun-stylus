@@ -9,7 +9,7 @@ const titleTemplate = "%s | Speed Run Stylus";
 export const getMetadata = ({
   title,
   description,
-  imageRelativePath = "/speedrun-logo-new.png",
+  imageRelativePath = "/speedrun-stylus-og-image.png",
 }: {
   title: string;
   description: string;
@@ -37,6 +37,7 @@ export const getMetadata = ({
       ],
     },
     twitter: {
+      card: "summary_large_image",
       title: {
         default: title,
         template: titleTemplate,
