@@ -1,5 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
+import { waitUntil } from "@vercel/functions";
+import { submitToAutograder } from "~~/services/autograder";
 import { getMongoDb } from "~~/services/database/config/mongoClient";
+import { ChallengeId, ReviewAction } from "~~/services/database/config/types";
+import { createUserChallenge, updateUserChallengeById } from "~~/services/database/repositories/userChallenges";
+import { createUser, getUserByAddress, updateUserSocials } from "~~/services/database/repositories/users";
+
+// This function can run for a maximum of 60 seconds in Vercel
+export const maxDuration = 60;
 
 export async function POST(request: NextRequest) {
   try {
@@ -105,6 +113,85 @@ export async function POST(request: NextRequest) {
         ...submissionData,
         createdAt: new Date(),
       });
+    }
+
+    // Also save to NeonDB for portfolio display
+    let submissionId: number | undefined;
+    try {
+      // Check if user exists in NeonDB, if not create them
+      let user = await getUserByAddress(walletAddress);
+      if (!user) {
+        user = await createUser({
+          userAddress: walletAddress,
+        });
+      }
+
+      // Update user's socialGithub if not already set and we have a GitHub username
+      if (githubUsername && !user.socialGithub) {
+        await updateUserSocials(walletAddress, { socialGithub: githubUsername });
+      }
+
+      // Create user challenge entry in NeonDB
+      const submissionResult = await createUserChallenge({
+        userAddress: walletAddress,
+        challengeId: ChallengeId.ERC20_FOUNDATION,
+        githubRepoUrl: `https://github.com/${githubRepo}`,
+        frontendUrl: deployedUrl || null,
+        deployedContractAddress: contractAddress.toLowerCase(),
+        githubUsername: githubUsername || null,
+        reviewAction: ReviewAction.SUBMITTED,
+        reviewComment: "Your submission is being processed by the autograder...",
+      });
+
+      submissionId = submissionResult?.id;
+    } catch (neonError) {
+      // Log error but don't fail the submission - MongoDB save succeeded
+      console.error("Error saving to NeonDB:", neonError);
+    }
+
+    // Run autograder in background if NeonDB submission was successful
+    if (submissionId) {
+      const githubRepoUrl = `https://github.com/${githubRepo}`;
+      waitUntil(
+        (async () => {
+          try {
+            // Foundation challenge uses sortOrder 0
+            const gradingResult = await submitToAutograder({
+              challengeId: 0,
+              githubRepoUrl,
+            });
+
+            // Update the submission with the grading result
+            await updateUserChallengeById(submissionId, {
+              reviewAction: gradingResult.success ? ReviewAction.ACCEPTED : ReviewAction.REJECTED,
+              reviewComment: gradingResult.feedback,
+            });
+
+            // Also update MongoDB status
+            const db = await getMongoDb();
+            const mongoCollection = db.collection("foundation-users");
+            await mongoCollection.updateOne(
+              { walletAddress: walletAddress.toLowerCase() },
+              {
+                $set: {
+                  status: gradingResult.success ? "accepted" : "rejected",
+                  reviewComment: gradingResult.feedback,
+                  updatedAt: new Date(),
+                },
+              },
+            );
+
+            console.log(`Background autograding completed for foundation challenge, user ${walletAddress}`);
+          } catch (error) {
+            console.error("Error in background autograding:", error);
+            // Update with error status
+            await updateUserChallengeById(submissionId, {
+              reviewAction: ReviewAction.REJECTED,
+              reviewComment: "There was an error while grading your submission. Please try again later.",
+            });
+          }
+        })(),
+      );
     }
 
     return NextResponse.json(

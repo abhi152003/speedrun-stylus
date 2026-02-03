@@ -541,10 +541,14 @@ const ChallengeRow = ({
     <>
       <tr
         key={localChallengeData.challengeId}
-        className={`hover:bg-base-200/50 transition-colors border-b border-base-200 ${isDisabled ? "opacity-60" : ""}`}
+        className={`hover:bg-base-200/50 transition-colors border-b border-base-200 ${isDisabled && localChallengeData.challengeId !== "erc20-foundation" ? "opacity-60" : ""}`}
       >
         <td className="py-3 px-3">
-          {isDisabled ? (
+          {localChallengeData.challengeId === "erc20-foundation" ? (
+            <Link href="/foundation" className="hover:underline text-primary font-medium text-sm">
+              🏆 Foundation - {localChallengeData.challenge.challengeName}
+            </Link>
+          ) : isDisabled ? (
             <span className="text-base-content/60 text-sm">{localChallengeData.challenge.challengeName}</span>
           ) : (
             <Link
